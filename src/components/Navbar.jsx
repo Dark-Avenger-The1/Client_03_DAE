@@ -1,11 +1,14 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import './Navbar.css';
 
 const NAV_ITEMS = {
   buyer: [
-    { label: 'Catalog', to: '/' },
+    { label: 'Home', to: '/' },
+    { label: 'Browse', to: '/catalog' },
+    { label: 'Farms', to: '/farms' },
     { label: 'My orders', to: '/orders' },
-    { label: 'Cart', to: '/cart' },
   ],
   seller: [
     { label: 'Dashboard', to: '/seller' },
@@ -16,12 +19,30 @@ const NAV_ITEMS = {
 
 // role: 'buyer' | 'seller'
 export default function Navbar({ role = 'buyer', brandName = 'Farmstand', userName, points }) {
+  const { user, logout } = useAuth();
+  const { count } = useCart();
+  const navigate = useNavigate();
+
   const items = NAV_ITEMS[role] || NAV_ITEMS.buyer;
-  const initials = userName ? userName.slice(0, 2).toUpperCase() : '?';
+  // Explicit props win so pages can render a navbar for a fixed persona.
+  const displayName = userName ?? user?.name;
+  const displayPoints = points ?? (role === 'buyer' ? user?.points : undefined);
+  const initials = displayName ? displayName.slice(0, 2).toUpperCase() : '?';
+
+  // A seller signed in on this device goes straight to their dashboard;
+  // everyone else gets the seller sign-in page first.
+  const sellTarget = user?.role === 'seller' ? '/seller' : '/seller/login';
+
+  function handleLogout() {
+    logout();
+    navigate('/');
+  }
 
   return (
     <header className="navbar">
-      <Link to="/" className="navbar-brand">{brandName}</Link>
+      <Link to={role === 'seller' ? '/seller' : '/'} className="navbar-brand">
+        {brandName}
+      </Link>
 
       <nav className="navbar-links">
         {items.map((item) => (
@@ -32,10 +53,37 @@ export default function Navbar({ role = 'buyer', brandName = 'Farmstand', userNa
       </nav>
 
       <div className="navbar-right">
-        {typeof points === 'number' && (
-          <span className="navbar-points">{points} pts</span>
+        {role === 'buyer' && (
+          <Link to={sellTarget} className="navbar-sell">
+            Sell a product
+          </Link>
         )}
-        <div className="navbar-avatar">{initials}</div>
+
+        {role === 'buyer' && (
+          <Link to="/cart" className="navbar-cart">
+            Cart
+            {count > 0 && <span className="navbar-cart-count">{count}</span>}
+          </Link>
+        )}
+
+        {typeof displayPoints === 'number' && (
+          <span className="navbar-points">{displayPoints} pts</span>
+        )}
+
+        {role === 'buyer' && !user ? (
+          <Link to="/login" className="navbar-signin">
+            Sign in
+          </Link>
+        ) : (
+          <div className="navbar-account">
+            <div className="navbar-avatar">{initials}</div>
+            {user && (
+              <button type="button" className="navbar-logout" onClick={handleLogout}>
+                Sign out
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </header>
   );
