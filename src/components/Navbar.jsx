@@ -14,16 +14,16 @@ const NAV_ITEMS = {
     { label: 'Dashboard', to: '/seller' },
     { label: 'My listings', to: '/seller/listings' },
     { label: 'Add product', to: '/seller/add' },
+    { label: 'Analytics', to: '/seller/analytics' },
   ],
 };
 
 // role: 'buyer' | 'seller'
-export default function Navbar({ role = 'buyer', brandName = 'Farmstand', userName, points }) {
+export default function Navbar({ role = 'buyer', brandName = 'UmaLink', userName, points }) {
+  const items = NAV_ITEMS[role] || NAV_ITEMS.buyer;
   const { user, logout } = useAuth();
   const { count } = useCart();
   const navigate = useNavigate();
-
-  const items = NAV_ITEMS[role] || NAV_ITEMS.buyer;
   // Explicit props win so pages can render a navbar for a fixed persona.
   const displayName = userName ?? user?.name;
   const displayPoints = points ?? (role === 'buyer' ? user?.points : undefined);

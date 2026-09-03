@@ -14,6 +14,9 @@ import Cart from './pages/Cart'
 import Orders from './pages/Orders'
 import Login from './pages/Login'
 import SellerLogin from './pages/SellerLogin'
+import MyListings from './pages/MyListing'
+import SellerAnalytics from './pages/SellerAnalytics'
+import AddProduct from './pages/AddProduct'
 
 function App() {
   return (
@@ -50,7 +53,10 @@ function App() {
             {/* Seller side */}
             <Route path="/seller/login" element={<SellerLogin />} />
             <Route path="/seller" element={<HomeSeller />} />
-
+            <Route path="/seller" element={<HomeSeller />} />
+            <Route path="/seller/listings" element={<MyListings />} />
+            <Route path="/seller/analytics" element={<SellerAnalytics />} />
+            <Route path="/seller/add" element={<AddProduct />} /> 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </CartProvider>

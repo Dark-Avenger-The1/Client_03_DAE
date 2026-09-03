@@ -13,7 +13,7 @@ const sellerProducts = [
 
 const HomeSeller = () => {
   return (
-    <Layout role="seller" brandName="Farmstand" userName="Aling Nena" points={240}>
+    <Layout role="seller" userName="Aling Nena" points={240}>
       <div className="seller-dashboard-header">
         <div>
           <h1>Your listings</h1>
@@ -30,10 +30,6 @@ const HomeSeller = () => {
         <div className="stat-card">
           <span className="stat-value">3</span>
           <span className="stat-label">Pending orders</span>
-        </div>
-        <div className="stat-card">
-          <span className="stat-value">240</span>
-          <span className="stat-label">Points earned</span>
         </div>
       </div>
 
