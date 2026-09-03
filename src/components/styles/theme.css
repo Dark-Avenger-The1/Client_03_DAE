@@ -1,0 +1,53 @@
+/* Add these two lines to index.html <head> before this file is imported:
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+*/
+
+:root {
+  /* green — the shiny accent, used for actions, prices, status */
+  --moss-900: #123B1F;
+  --leaf-600: #227A3B;
+  --leaf-500: #2F9E44;
+  --leaf-300: #6FE39A;
+
+  /* silver — the quiet structural tone, used for surfaces and chrome */
+  --silver-100: #EEF1F2;
+  --silver-300: #D7DDE0;
+  --silver-500: #AAB4B8;
+  --silver-700: #778387;
+
+  /* neutrals */
+  --mist-50: #F5F8F6;
+  --paper: #FFFFFF;
+
+  --radius-card: 14px;
+  --radius-control: 10px;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--mist-50);
+  color: var(--moss-900);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

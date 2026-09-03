@@ -1,0 +1,12 @@
+.footer {
+  background: var(--silver-100);
+  border-top: 1px solid var(--silver-300);
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--silver-700);
+}
