@@ -16,7 +16,7 @@ const NAV_ITEMS = {
 };
 
 // role: 'buyer' | 'seller'
-export default function Navbar({ role = 'buyer', brandName = 'Farmstand', userName, points }) {
+export default function Navbar({ role = 'buyer', brandName = 'UmaLink', userName, points }) {
   const items = NAV_ITEMS[role] || NAV_ITEMS.buyer;
   const initials = userName ? userName.slice(0, 2).toUpperCase() : '?';
 

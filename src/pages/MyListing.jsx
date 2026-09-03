@@ -27,7 +27,7 @@ const MyListings = () => {
       : allListings.filter((item) => item.category === activeCategory);
 
   return (
-    <Layout role="seller" brandName="Farmstand" userName="Aling Nena" points={240}>
+    <Layout role="seller" userName="Aling Nena" points={240}>
       <div className="listings-header">
         <div>
           <h1>Manage your listings</h1>

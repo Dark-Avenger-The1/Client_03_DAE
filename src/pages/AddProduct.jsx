@@ -72,7 +72,7 @@ const AddProduct = () => {
   const quantityOptions = QUANTITY_UNITS[category];
 
   return (
-    <Layout role="seller" brandName="Farmstand" userName="Aling Nena">
+    <Layout role="seller" userName="Aling Nena">
       <div className="add-product-header">
         <h1>Add a product</h1>
         <p>These details feed into your standard price — the numbers only, nothing calculated here yet.</p>

@@ -26,7 +26,7 @@ const maxDay = Math.max(...weeklySales.map((d) => d.amount));
 
 const SellerAnalytics = () => {
   return (
-    <Layout role="seller" brandName="Farmstand" userName="Aling Nena">
+    <Layout role="seller" userName="Aling Nena">
       <div className="analytics-header">
         <h1>Your business at a glance</h1>
         <p>A simple look at how your listings are doing this week.</p>
