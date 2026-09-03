@@ -1,0 +1,26 @@
+.notice {
+  margin: 0 0 1rem;
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius-control);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.notice-info {
+  background: var(--mist-50);
+  border-color: var(--silver-300);
+  color: var(--silver-700);
+}
+
+.notice-success {
+  background: var(--mist-50);
+  border-color: var(--leaf-500);
+  color: var(--leaf-600);
+}
+
+.notice-error {
+  background: #fdf1f1;
+  border-color: #e2a3a3;
+  color: #9b2c2c;
+}

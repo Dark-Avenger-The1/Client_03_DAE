@@ -1,0 +1,384 @@
+.cart-head {
+  margin-bottom: 1.25rem;
+}
+
+.cart-head h1 {
+  font-size: 1.8rem;
+}
+
+.cart-head p {
+  margin: 0.3rem 0 0;
+  font-size: 0.9rem;
+  color: var(--silver-700);
+}
+
+.cart-shell {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 84px 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  background: var(--paper);
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-card);
+  padding: 1rem;
+}
+
+.cart-item-thumb {
+  width: 84px;
+  height: 84px;
+  border-radius: var(--radius-control);
+  background: linear-gradient(135deg, var(--silver-100), var(--silver-300));
+}
+
+.cart-item-thumb[data-category='Vegetable'] {
+  background: linear-gradient(135deg, var(--leaf-300), var(--leaf-600));
+  opacity: 0.55;
+}
+
+.cart-item-thumb[data-category='Fruit'] {
+  background: linear-gradient(135deg, #ffd9a0, #f0a35e);
+}
+
+.cart-item-thumb[data-category='Livestock'] {
+  background: linear-gradient(135deg, var(--silver-300), var(--silver-500));
+}
+
+.cart-item-info h3 {
+  font-size: 1.05rem;
+  margin: 0.4rem 0 0.15rem;
+}
+
+.cart-item-info h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cart-item-info h3 a:hover {
+  color: var(--leaf-600);
+}
+
+.cart-item-farmer,
+.cart-item-unit {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--silver-700);
+}
+
+.cart-item-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.cart-item-line-total {
+  margin: 0;
+  font-weight: 700;
+  color: var(--leaf-600);
+}
+
+.cart-item-remove {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--silver-700);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.cart-item-remove:hover {
+  color: #9b2c2c;
+  text-decoration: underline;
+}
+
+.cart-summary {
+  background: var(--paper);
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: sticky;
+  top: 1.5rem;
+}
+
+.cart-summary h2 {
+  font-size: 1.2rem;
+}
+
+.cart-summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  color: var(--silver-700);
+}
+
+.cart-summary-total {
+  border-top: 1px solid var(--silver-300);
+  padding-top: 0.65rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--moss-900);
+}
+
+.cart-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.cart-field span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--silver-700);
+}
+
+.cart-field textarea {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-control);
+  background: var(--mist-50);
+  color: var(--moss-900);
+  resize: vertical;
+}
+
+.cart-field textarea:focus {
+  outline: 2px solid var(--leaf-300);
+  outline-offset: 1px;
+  border-color: var(--leaf-500);
+}
+
+.cart-summary-note {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--silver-700);
+}
+
+.cart-empty {
+  text-align: center;
+  padding: 3.5rem 1rem;
+}
+
+.cart-empty p {
+  margin: 0.5rem 0 1.5rem;
+  color: var(--silver-700);
+  font-size: 0.9rem;
+}
+
+.cart-empty-cta {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  color: #f3fbf6;
+  background: linear-gradient(135deg, var(--leaf-300), var(--leaf-600));
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--radius-control);
+}
+
+@media (max-width: 860px) {
+  .cart-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-summary {
+    position: static;
+  }
+
+  .cart-item {
+    grid-template-columns: 64px 1fr;
+  }
+
+  .cart-item-thumb {
+    width: 64px;
+    height: 64px;
+  }
+
+  .cart-item-controls {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* ---- Cart grouped by farm ---- */
+.cart-group {
+  background: var(--paper);
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+.cart-group-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.15rem;
+  background: linear-gradient(180deg, var(--mist-50), var(--paper));
+  border-bottom: 1px solid var(--silver-300);
+}
+
+.cart-group-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--moss-900);
+  text-decoration: none;
+}
+
+.cart-group-name:hover {
+  color: var(--leaf-600);
+}
+
+.cart-group-head p {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  color: var(--silver-700);
+}
+
+.cart-group-subtotal {
+  font-weight: 700;
+  color: var(--leaf-600);
+}
+
+/* Items now sit inside a farm group, so they lose their own frame. */
+.cart-group .cart-item {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--silver-300);
+}
+
+.cart-group .cart-item:last-child {
+  border-bottom: none;
+}
+
+/* ---- Fulfillment toggle ---- */
+.fulfillment-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+  padding: 0.3rem;
+  background: var(--mist-50);
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-control);
+}
+
+.fulfillment-option {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.55rem 0.5rem;
+  border: none;
+  border-radius: calc(var(--radius-control) - 3px);
+  background: none;
+  color: var(--silver-700);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.fulfillment-option:hover {
+  color: var(--leaf-600);
+}
+
+.fulfillment-option.is-active {
+  background: linear-gradient(135deg, var(--leaf-300), var(--leaf-500));
+  color: #f3fbf6;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.cart-method-note {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--silver-700);
+}
+
+/* ---- Pick-up points ---- */
+.pickup-points {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pickup-point {
+  background: var(--mist-50);
+  border: 1px solid var(--silver-300);
+  border-left: 3px solid var(--leaf-500);
+  border-radius: var(--radius-control);
+  padding: 0.8rem 0.95rem;
+}
+
+.pickup-point h3 {
+  font-size: 0.95rem;
+  margin: 0 0 0.3rem;
+}
+
+.pickup-address {
+  margin: 0;
+  font-size: 0.83rem;
+  line-height: 1.5;
+  color: var(--moss-900);
+}
+
+.pickup-hours {
+  margin: 0.3rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--leaf-600);
+}
+
+.pickup-ready {
+  margin: 0.15rem 0 0;
+  font-size: 0.75rem;
+  color: var(--silver-700);
+}
+
+.cart-field input {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-control);
+  background: var(--mist-50);
+  color: var(--moss-900);
+}
+
+.cart-field input:focus {
+  outline: 2px solid var(--leaf-300);
+  outline-offset: 1px;
+  border-color: var(--leaf-500);
+}
+
+/* ---- Totals ---- */
+.cart-totals {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--silver-300);
+}
+
+.cart-summary-sub {
+  font-size: 0.78rem;
+  padding-left: 0.5rem;
+}

@@ -1,0 +1,19 @@
+.farms-head {
+  margin-bottom: 1.5rem;
+}
+
+.farms-head h1 {
+  font-size: 1.8rem;
+}
+
+.farms-head p {
+  margin: 0.3rem 0 0;
+  font-size: 0.9rem;
+  color: var(--silver-700);
+}
+
+.farms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
