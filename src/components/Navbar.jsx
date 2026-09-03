@@ -11,6 +11,7 @@ const NAV_ITEMS = {
     { label: 'Dashboard', to: '/seller' },
     { label: 'My listings', to: '/seller/listings' },
     { label: 'Add product', to: '/seller/add' },
+    { label: 'Analytics', to: '/seller/analytics' },
   ],
 };
 
@@ -32,7 +33,7 @@ export default function Navbar({ role = 'buyer', brandName = 'Farmstand', userNa
       </nav>
 
       <div className="navbar-right">
-        {typeof points === 'number' && (
+        {role === 'buyer' && typeof points === 'number' && (
           <span className="navbar-points">{points} pts</span>
         )}
         <div className="navbar-avatar">{initials}</div>

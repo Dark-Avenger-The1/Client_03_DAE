@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Layout from '../components/Layout';
 import ProductCard from '../components/ProductCard';
 import Button from '../components/Button';
-import './MyListings.css';
+import './MyListing.css';
 
 // Mock data — replace with real listings once the backend exists
 const allListings = [
