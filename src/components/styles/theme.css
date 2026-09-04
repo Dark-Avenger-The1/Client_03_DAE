@@ -4,13 +4,17 @@
 */
 
 :root {
-  /* green — the shiny accent, used for actions, prices, status */
-  --moss-900: #123B1F;
-  --leaf-600: #227A3B;
-  --leaf-500: #2F9E44;
-  --leaf-300: #6FE39A;
+  /* green — richer and deeper now, matching the client's silk-poster reference */
+  --moss-900: #0F2A1A;
+  --leaf-600: #146C34;
+  --leaf-500: #1F8A44;
+  --leaf-300: #6FE3A0;
 
-  /* silver — the quiet structural tone, used for surfaces and chrome */
+  /* the rich diagonal "silk" gradient — used for prominent chrome (navbar, banners) */
+  --silk-gradient: linear-gradient(135deg, #0B3D1F 0%, #146C34 45%, #1F8A44 75%, #6FE3A0 100%);
+  --silk-text: #EAFBF1;
+
+  /* silver — now the quieter secondary tone, used for surfaces and structure */
   --silver-100: #EEF1F2;
   --silver-300: #D7DDE0;
   --silver-500: #AAB4B8;
