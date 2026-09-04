@@ -52,7 +52,7 @@ const Catalog = () => {
   }
 
   return (
-    <Layout role="buyer" brandName="Farmstand">
+    <Layout role="buyer">
       <div className="catalog-head">
         <div>
           <h1>Browse the harvest</h1>

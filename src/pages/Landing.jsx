@@ -46,7 +46,7 @@ const Landing = () => {
   }
 
   return (
-    <Layout role="buyer" brandName="Farmstand">
+    <Layout role="buyer">
       <section className="landing-hero">
         <div className="landing-hero-copy">
           <p className="landing-eyebrow">Straight from the farm</p>

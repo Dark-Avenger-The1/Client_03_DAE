@@ -24,7 +24,7 @@ const FarmDetail = () => {
 
   if (!farm) {
     return (
-      <Layout role="buyer" brandName="Farmstand">
+      <Layout role="buyer">
         <div className="farm-missing">
           <h1>We can't find that farm</h1>
           <p>It may have stopped accepting orders.</p>
@@ -42,7 +42,7 @@ const FarmDetail = () => {
   }
 
   return (
-    <Layout role="buyer" brandName="Farmstand">
+    <Layout role="buyer">
       <Link to="/farms" className="farm-back">
         ← All farms
       </Link>

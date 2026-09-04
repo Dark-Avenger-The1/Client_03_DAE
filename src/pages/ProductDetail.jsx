@@ -20,7 +20,7 @@ const ProductDetail = () => {
 
   if (!product) {
     return (
-      <Layout role="buyer" brandName="Farmstand">
+      <Layout role="buyer">
         <div className="product-missing">
           <h1>We can't find that listing</h1>
           <p>It may have sold out or been taken down by the farm.</p>
@@ -45,7 +45,7 @@ const ProductDetail = () => {
   }
 
   return (
-    <Layout role="buyer" brandName="Farmstand">
+    <Layout role="buyer">
       <Link to="/catalog" className="product-back">
         ← Back to browsing
       </Link>

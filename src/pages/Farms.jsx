@@ -6,7 +6,7 @@ import './Farms.css';
 
 const Farms = () => {
   return (
-    <Layout role="buyer" brandName="Farmstand">
+    <Layout role="buyer">
       <div className="farms-head">
         <h1>Registered farms</h1>
         <p>{farms.length} farms accepting orders right now. Pick one to shop its harvest.</p>

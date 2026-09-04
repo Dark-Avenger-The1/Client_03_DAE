@@ -46,7 +46,7 @@ const Login = () => {
   }
 
   return (
-    <Layout role="buyer" brandName="Farmstand">
+    <Layout role="buyer">
       <div className="auth-shell">
         <div className="auth-card">
           <p className="auth-eyebrow">Buyer account</p>

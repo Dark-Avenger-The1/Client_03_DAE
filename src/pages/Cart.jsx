@@ -61,7 +61,7 @@ const Cart = () => {
 
   if (items.length === 0) {
     return (
-      <Layout role="buyer" brandName="Farmstand">
+      <Layout role="buyer">
         <div className="cart-empty">
           <h1>Your cart is empty</h1>
           <p>Signed in as {user.name} — everything you add is saved to your account.</p>
