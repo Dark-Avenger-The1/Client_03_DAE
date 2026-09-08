@@ -63,3 +63,32 @@
   color: var(--silver-700);
   font-size: 0.8rem;
 }
+
+.product-card-image a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.product-card-name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.product-card-name a:hover {
+  color: var(--leaf-600);
+}
+
+/* A quiet tint per category so a grid of photo-less listings still reads */
+.product-card-image-placeholder[data-category='Vegetable'] {
+  background: linear-gradient(135deg, var(--leaf-300), var(--leaf-600));
+  opacity: 0.55;
+}
+
+.product-card-image-placeholder[data-category='Fruit'] {
+  background: linear-gradient(135deg, #ffd9a0, #f0a35e);
+}
+
+.product-card-image-placeholder[data-category='Livestock'] {
+  background: linear-gradient(135deg, var(--silver-300), var(--silver-500));
+}

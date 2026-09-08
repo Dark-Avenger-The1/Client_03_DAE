@@ -1,0 +1,110 @@
+.catalog-head {
+  margin-bottom: 1.25rem;
+}
+
+.catalog-head h1 {
+  font-size: 1.8rem;
+}
+
+.catalog-head p {
+  margin: 0.3rem 0 0;
+  color: var(--silver-700);
+  font-size: 0.9rem;
+}
+
+.catalog-filters {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.15rem;
+  background: var(--paper);
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-card);
+  margin-bottom: 1.5rem;
+}
+
+.catalog-search {
+  flex: 1 1 220px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-control);
+  background: var(--mist-50);
+  color: var(--moss-900);
+}
+
+.catalog-search:focus {
+  outline: 2px solid var(--leaf-300);
+  outline-offset: 1px;
+}
+
+.catalog-chips {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.catalog-chip {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--silver-300);
+  background: var(--mist-50);
+  color: var(--silver-700);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.catalog-chip:hover {
+  border-color: var(--leaf-500);
+  color: var(--leaf-600);
+}
+
+.catalog-chip.is-active {
+  background: linear-gradient(135deg, var(--leaf-300), var(--leaf-500));
+  border-color: var(--leaf-500);
+  color: #f3fbf6;
+}
+
+.catalog-sort {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--silver-700);
+  font-weight: 600;
+}
+
+.catalog-sort select {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--radius-control);
+  border: 1px solid var(--silver-300);
+  background: var(--mist-50);
+  color: var(--moss-900);
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.catalog-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: var(--paper);
+  border: 1px dashed var(--silver-300);
+  border-radius: var(--radius-card);
+}
+
+.catalog-empty p {
+  margin: 0.5rem 0 0;
+  color: var(--silver-700);
+  font-size: 0.9rem;
+}

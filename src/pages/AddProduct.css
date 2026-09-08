@@ -1,0 +1,82 @@
+.add-product-header {
+  margin-bottom: 1.5rem;
+}
+
+.add-product-header p {
+  margin: 0.25rem 0 0;
+  color: var(--silver-700);
+  font-size: 0.9rem;
+}
+
+.add-product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 640px;
+}
+
+.form-section {
+  background: var(--paper);
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+}
+
+.form-section h2 {
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  color: var(--moss-900);
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-row-wrap {
+  flex-wrap: wrap;
+}
+
+.form-row .form-field {
+  flex: 1;
+  min-width: 160px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--silver-700);
+}
+
+.form-field:last-child {
+  margin-bottom: 0;
+}
+
+.form-field input,
+.form-field select {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--moss-900);
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-control);
+  padding: 0.6rem 0.75rem;
+  background: var(--mist-50);
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  outline: none;
+  border-color: var(--leaf-500);
+  background: var(--paper);
+}
+
+@media (max-width: 640px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}

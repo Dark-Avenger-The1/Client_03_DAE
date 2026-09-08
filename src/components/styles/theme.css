@@ -4,11 +4,17 @@
 */
 
 :root {
-  /* green — the shiny accent, used for actions, prices, status */
-  --moss-900: #123B1F;
-  --leaf-600: #227A3B;
-  --leaf-500: #2F9E44;
-  --leaf-300: #6FE39A;
+  /* green — colors extracted from the client's reference poster (dark charcoal
+     header -> rich emerald accent -> soft sage highlight), not guessed */
+  --moss-900: #16201B;
+  --leaf-600: #14603B;
+  --leaf-500: #137047;
+  --leaf-300: #4FCB8B;
+
+  /* the rich diagonal "silk" gradient — dark charcoal into vivid emerald,
+     used for prominent chrome (navbar, banners) */
+  --silk-gradient: linear-gradient(135deg, #141815 0%, #1E4A34 35%, #137047 70%, #4FCB8B 100%);
+  --silk-text: #EAFBF1;
 
   /* silver — the quiet structural tone, used for surfaces and chrome */
   --silver-100: #EEF1F2;

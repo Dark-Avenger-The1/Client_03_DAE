@@ -1,0 +1,126 @@
+.analytics-header {
+  margin-bottom: 1.5rem;
+}
+
+.analytics-header p {
+  margin: 0.25rem 0 0;
+  color: var(--silver-700);
+  font-size: 0.9rem;
+}
+
+.analytics-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--paper);
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-card);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--leaf-600);
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--silver-700);
+}
+
+.analytics-section {
+  background: var(--paper);
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.analytics-section h2 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.sales-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  height: 160px;
+}
+
+.sales-bar-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  gap: 0.4rem;
+}
+
+.sales-bar {
+  width: 100%;
+  max-width: 32px;
+  background: linear-gradient(180deg, var(--leaf-300), var(--leaf-600));
+  border-radius: 6px 6px 0 0;
+  min-height: 4px;
+}
+
+.sales-bar-label {
+  font-size: 0.75rem;
+  color: var(--silver-700);
+}
+
+.top-products {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-product-row {
+  display: grid;
+  grid-template-columns: 24px 1fr auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--silver-100);
+  font-size: 0.9rem;
+}
+
+.top-product-row:last-child {
+  border-bottom: none;
+}
+
+.top-product-rank {
+  font-weight: 700;
+  color: var(--silver-500);
+}
+
+.top-product-name {
+  font-weight: 600;
+  color: var(--moss-900);
+}
+
+.top-product-units {
+  color: var(--silver-700);
+  font-size: 0.8rem;
+}
+
+.top-product-revenue {
+  font-weight: 700;
+  color: var(--leaf-600);
+}
+
+@media (max-width: 640px) {
+  .analytics-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

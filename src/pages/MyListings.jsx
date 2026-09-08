@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Layout from '../components/Layout';
 import ProductCard from '../components/ProductCard';
 import Button from '../components/Button';
-import './MyListing.css';
+import './MyListings.css';
 
 // Mock data — replace with real listings once the backend exists
 const allListings = [
@@ -27,7 +27,7 @@ const MyListings = () => {
       : allListings.filter((item) => item.category === activeCategory);
 
   return (
-    <Layout role="seller" userName="Aling Nena" points={240}>
+    <Layout role="seller" brandName="UmaLink" userName="Aling Nena">
       <div className="listings-header">
         <div>
           <h1>Manage your listings</h1>

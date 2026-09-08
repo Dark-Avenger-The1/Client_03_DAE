@@ -1,0 +1,62 @@
+.nearby-header {
+  margin-bottom: 1.5rem;
+}
+
+.nearby-header p {
+  margin: 0.25rem 0 0;
+  color: var(--silver-700);
+  font-size: 0.9rem;
+}
+
+.nearby-farmer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 640px;
+}
+
+.nearby-farmer-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--paper);
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-card);
+  padding: 1rem 1.25rem;
+}
+
+.nearby-farmer-info {
+  flex: 1;
+}
+
+.nearby-farmer-info h3 {
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.nearby-farmer-meta {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--silver-700);
+}
+
+.nearby-farmer-price {
+  font-weight: 700;
+  color: var(--leaf-600);
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+
+.nearby-farmer-price span {
+  font-weight: 400;
+  color: var(--silver-700);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 560px) {
+  .nearby-farmer-card {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+}

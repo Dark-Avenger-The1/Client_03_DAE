@@ -1,0 +1,57 @@
+.requests-header {
+  margin-bottom: 1.5rem;
+}
+
+.requests-header p {
+  margin: 0.25rem 0 0;
+  color: var(--silver-700);
+  font-size: 0.9rem;
+}
+
+.requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 640px;
+}
+
+.request-card {
+  background: var(--paper);
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-card);
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.request-top-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.3rem;
+}
+
+.request-top-row h3 {
+  font-size: 0.95rem;
+}
+
+.request-meta {
+  margin: 0.1rem 0 0;
+  font-size: 0.8rem;
+  color: var(--silver-700);
+}
+
+.request-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 560px) {
+  .request-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
