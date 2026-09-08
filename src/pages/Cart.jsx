@@ -74,7 +74,7 @@ const Cart = () => {
   }
 
   return (
-    <Layout role="buyer" brandName="Farmstand">
+    <Layout role="buyer" brandName="UmaLink">
       <div className="cart-head">
         <h1>Your cart</h1>
         <p>

@@ -13,7 +13,7 @@ const sellerProducts = [
 
 const HomeSeller = () => {
   return (
-    <Layout role="seller" userName="Aling Nena" points={240}>
+    <Layout role="seller" userName="Aling Nena">
       <div className="seller-dashboard-header">
         <div>
           <h1>Your listings</h1>

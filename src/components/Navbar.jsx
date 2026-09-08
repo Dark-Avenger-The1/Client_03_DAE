@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import logo from '../assets/umalink-logo.png';
 import './Navbar.css';
 
 const NAV_ITEMS = {
@@ -41,6 +42,7 @@ export default function Navbar({ role = 'buyer', brandName = 'UmaLink', userName
   return (
     <header className="navbar">
       <Link to={role === 'seller' ? '/seller' : '/'} className="navbar-brand">
+        <img src={logo} alt="" className="navbar-logo" />
         {brandName}
       </Link>
 

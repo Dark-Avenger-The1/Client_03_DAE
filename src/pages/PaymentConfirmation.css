@@ -1,0 +1,55 @@
+.confirmation-card {
+  max-width: 480px;
+  background: var(--paper);
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-card);
+  padding: 1.75rem;
+  margin: 1rem auto;
+  text-align: center;
+}
+
+.confirmation-card h1 {
+  margin: 0.75rem 0 0.4rem;
+  font-size: 1.4rem;
+}
+
+.confirmation-note {
+  color: var(--silver-700);
+  font-size: 0.88rem;
+  margin: 0 0 1.5rem;
+}
+
+.confirmation-details {
+  text-align: left;
+  border-top: 1px solid var(--silver-100);
+  border-bottom: 1px solid var(--silver-100);
+  padding: 1rem 0;
+  margin-bottom: 1.5rem;
+}
+
+.confirmation-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.4rem 0;
+  font-size: 0.85rem;
+  color: var(--silver-700);
+}
+
+.confirmation-row span:first-child {
+  color: var(--moss-900);
+  font-weight: 600;
+}
+
+.confirmation-total {
+  border-top: 1px solid var(--silver-100);
+  margin-top: 0.4rem;
+  padding-top: 0.6rem;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.confirmation-total span {
+  color: var(--leaf-600) !important;
+  font-weight: 700 !important;
+}

@@ -14,7 +14,7 @@ import Cart from './pages/Cart'
 import Orders from './pages/Orders'
 import Login from './pages/Login'
 import SellerLogin from './pages/SellerLogin'
-import MyListings from './pages/MyListing'
+import MyListings from './pages/MyListings'
 import SellerAnalytics from './pages/SellerAnalytics'
 import AddProduct from './pages/AddProduct'
 
@@ -50,13 +50,41 @@ function App() {
               }
             />
 
-            {/* Seller side */}
+            {/* Seller side — login is open, everything past it needs a seller account */}
             <Route path="/seller/login" element={<SellerLogin />} />
-            <Route path="/seller" element={<HomeSeller />} />
-            <Route path="/seller" element={<HomeSeller />} />
-            <Route path="/seller/listings" element={<MyListings />} />
-            <Route path="/seller/analytics" element={<SellerAnalytics />} />
-            <Route path="/seller/add" element={<AddProduct />} /> 
+            <Route
+              path="/seller"
+              element={
+                <RequireAuth reason="seller" role="seller">
+                  <HomeSeller />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/seller/listings"
+              element={
+                <RequireAuth reason="seller" role="seller">
+                  <MyListings />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/seller/analytics"
+              element={
+                <RequireAuth reason="seller" role="seller">
+                  <SellerAnalytics />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/seller/add"
+              element={
+                <RequireAuth reason="seller" role="seller">
+                  <AddProduct />
+                </RequireAuth>
+              }
+            />
+
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </CartProvider>

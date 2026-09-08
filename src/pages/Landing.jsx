@@ -52,7 +52,7 @@ const Landing = () => {
           <p className="landing-eyebrow">Straight from the farm</p>
           <h1>Fresh produce, bought direct from the people who grew it.</h1>
           <p className="landing-lede">
-            Farmstand connects you with local farms selling vegetables, fruit, and livestock at
+            UmaLink connects you with local farms selling vegetables, fruit, and livestock at
             their own prices — so more of what you pay stays with the farmer.
           </p>
 
@@ -177,7 +177,7 @@ const Landing = () => {
       <section className="landing-sell">
         <div>
           <h2>Growing something worth selling?</h2>
-          <p>List your harvest on Farmstand and set your own price. Setup takes a few minutes.</p>
+          <p>List your harvest on UmaLink and set your own price. Setup takes a few minutes.</p>
         </div>
         <Link to="/seller/login" className="landing-sell-cta">
           Sell a product

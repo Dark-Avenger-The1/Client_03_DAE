@@ -44,7 +44,7 @@ const SellerLogin = () => {
       <div className="auth-shell">
         <div className="auth-card">
           <p className="auth-eyebrow">Seller account</p>
-          <h1>{mode === 'signin' ? 'Sign in to sell' : 'Start selling on Farmstand'}</h1>
+          <h1>{mode === 'signin' ? 'Sign in to sell' : 'Start selling on UmaLink'}</h1>
           <p className="auth-lede">
             {mode === 'signin'
               ? 'Get back to your listings, orders, and payouts.'
@@ -114,7 +114,7 @@ const SellerLogin = () => {
         </div>
 
         <aside className="auth-aside">
-          <h2>Selling on Farmstand</h2>
+          <h2>Selling on UmaLink</h2>
           <ul>
             <li>You set your own price per kilo, head, or tray.</li>
             <li>Orders reach you directly — no middleman taking a cut.</li>

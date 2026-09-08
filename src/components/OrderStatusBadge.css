@@ -1,0 +1,34 @@
+.order-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+}
+
+.status-pending {
+  background: var(--silver-100);
+  color: var(--silver-700);
+  border: 1px solid var(--silver-300);
+}
+
+.status-confirmed {
+  background: var(--mist-50);
+  color: var(--leaf-600);
+  border: 1px solid var(--leaf-500);
+}
+
+.status-delivered {
+  background: var(--leaf-500);
+  color: #F3FBF6;
+}
+
+.status-cancelled {
+  background: var(--paper);
+  color: var(--silver-500);
+  border: 1px solid var(--silver-300);
+  text-decoration: line-through;
+}

@@ -19,7 +19,7 @@ const Orders = () => {
   const placedOrder = orders.find((o) => o.id === placed);
 
   return (
-    <Layout role="buyer" brandName="Farmstand">
+    <Layout role="buyer" brandName="UmaLink">
       <div className="orders-head">
         <h1>My orders</h1>
         <p>Every order you've placed, newest first.</p>
