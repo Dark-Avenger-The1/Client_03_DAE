@@ -4,17 +4,19 @@
 */
 
 :root {
-  /* green — richer and deeper now, matching the client's silk-poster reference */
-  --moss-900: #0F2A1A;
-  --leaf-600: #146C34;
-  --leaf-500: #1F8A44;
-  --leaf-300: #6FE3A0;
+  /* green — colors extracted from the client's reference poster (dark charcoal
+     header -> rich emerald accent -> soft sage highlight), not guessed */
+  --moss-900: #16201B;
+  --leaf-600: #14603B;
+  --leaf-500: #137047;
+  --leaf-300: #4FCB8B;
 
-  /* the rich diagonal "silk" gradient — used for prominent chrome (navbar, banners) */
-  --silk-gradient: linear-gradient(135deg, #0B3D1F 0%, #146C34 45%, #1F8A44 75%, #6FE3A0 100%);
+  /* the rich diagonal "silk" gradient — dark charcoal into vivid emerald,
+     used for prominent chrome (navbar, banners) */
+  --silk-gradient: linear-gradient(135deg, #141815 0%, #1E4A34 35%, #137047 70%, #4FCB8B 100%);
   --silk-text: #EAFBF1;
 
-  /* silver — now the quieter secondary tone, used for surfaces and structure */
+  /* silver — the quiet structural tone, used for surfaces and chrome */
   --silver-100: #EEF1F2;
   --silver-300: #D7DDE0;
   --silver-500: #AAB4B8;

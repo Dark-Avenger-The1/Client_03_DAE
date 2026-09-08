@@ -1,0 +1,78 @@
+.farm-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 1.25rem;
+  background: var(--paper);
+  border: 1px solid var(--silver-300);
+  border-radius: var(--radius-card);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.farm-card:hover {
+  border-color: var(--leaf-500);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(18, 59, 31, 0.08);
+}
+
+.farm-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.farm-card-head h3 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.farm-card-farmer {
+  margin: 0.15rem 0 0;
+  font-size: 0.85rem;
+  color: var(--leaf-600);
+  font-weight: 600;
+}
+
+.farm-card-rating {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--moss-900);
+  background: var(--mist-50);
+  border: 1px solid var(--silver-300);
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+}
+
+.farm-card-description {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--silver-700);
+}
+
+.farm-card-tags {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.farm-card-meta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--silver-300);
+  font-size: 0.78rem;
+  color: var(--silver-700);
+}
+
+.farm-card-count {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--leaf-600);
+}
