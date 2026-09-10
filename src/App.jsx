@@ -7,6 +7,7 @@ import RequireAuth from './components/RequireAuth'
 import HomeSeller from './pages/HomeSeller'
 import Landing from './pages/Landing'
 import Catalog from './pages/Catalog'
+import Combos from './pages/Combos'
 import Farms from './pages/Farms'
 import FarmDetail from './pages/FarmDetail'
 import ProductDetail from './pages/ProductDetail'
@@ -27,6 +28,7 @@ function App() {
             {/* Customer / buyer side — browsing is open to everyone */}
             <Route path="/" element={<Landing />} />
             <Route path="/catalog" element={<Catalog />} />
+            <Route path="/combos" element={<Combos />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/farms" element={<Farms />} />
             <Route path="/farm/:id" element={<FarmDetail />} />

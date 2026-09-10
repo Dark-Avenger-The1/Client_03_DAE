@@ -67,7 +67,21 @@ export function AuthProvider({ children }) {
       setUser(null);
     }
 
-    return { user, isLoggedIn: Boolean(user), signup, login, logout };
+    // Rewards balance. Writes through to the stored account so the points
+    // survive a sign-out, and returns the new total for the caller to show.
+    function addPoints(amount) {
+      if (!user || !amount) return user?.points ?? 0;
+
+      const next = (user.points ?? 0) + amount;
+      const updated = accounts().map((a) =>
+        a.email.toLowerCase() === user.email.toLowerCase() ? { ...a, points: next } : a,
+      );
+      localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(updated));
+      setUser((current) => ({ ...current, points: next }));
+      return next;
+    }
+
+    return { user, isLoggedIn: Boolean(user), signup, login, logout, addPoints };
   }, [user]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

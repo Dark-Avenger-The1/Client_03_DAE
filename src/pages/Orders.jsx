@@ -18,6 +18,20 @@ const Orders = () => {
   const placed = searchParams.get('placed');
   const placedOrder = orders.find((o) => o.id === placed);
 
+  // Built as one string: <Notice> hides itself on empty children, and an array
+  // of conditionals would always count as present.
+  let placedMessage = '';
+  if (placed) {
+    placedMessage =
+      placedOrder?.method === 'pickup'
+        ? `Order ${placed} is reserved. Collect it at the farm once they confirm.`
+        : `Order ${placed} is in. The farm will confirm it shortly.`;
+    if (placedOrder?.pointsEarned > 0) {
+      const earned = placedOrder.pointsEarned;
+      placedMessage += ` You earned ${earned} point${earned === 1 ? '' : 's'} on it.`;
+    }
+  }
+
   return (
     <Layout role="buyer" brandName="UmaLink">
       <div className="orders-head">
@@ -25,12 +39,7 @@ const Orders = () => {
         <p>Every order you've placed, newest first.</p>
       </div>
 
-      <Notice tone="success">
-        {placed &&
-          (placedOrder?.method === 'pickup'
-            ? `Order ${placed} is reserved. Collect it at the farm once they confirm.`
-            : `Order ${placed} is in. The farm will confirm it shortly.`)}
-      </Notice>
+      <Notice tone="success">{placedMessage}</Notice>
 
       {orders.length === 0 ? (
         <div className="orders-empty">
@@ -115,7 +124,15 @@ const Orders = () => {
                     )}
                   </div>
 
-                  <p className="order-total">₱{order.total}</p>
+                  <div className="order-total-block">
+                    <p className="order-total">₱{order.total}</p>
+                    {order.pointsEarned > 0 && (
+                      <p className="order-points">
+                        +{order.pointsEarned} pts
+                        {order.bonusPoints > 0 && ` · ${order.bonusPoints} from combos`}
+                      </p>
+                    )}
+                  </div>
                 </footer>
               </article>
             );

@@ -107,7 +107,9 @@ const Cart = () => {
                   <div className="cart-item-info">
                     <CategoryBadge category={item.category} />
                     <h3>
-                      <Link to={`/product/${item.id}`}>{item.name}</Link>
+                      {/* Combo lines are sets, not catalog rows, so they point back
+                          at the deal that created them. */}
+                      <Link to={item.isCombo ? '/combos' : `/product/${item.id}`}>{item.name}</Link>
                     </h3>
                     <p className="cart-item-unit">
                       ₱{item.price} / {item.unit}

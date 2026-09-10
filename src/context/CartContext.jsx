@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useAuth } from './AuthContext';
 import { getFarmById } from '../data/farms';
+import { pointsForItems, pointsForSpend } from '../data/points';
 
 /*
  * Cart + orders, stored per account in localStorage.
@@ -36,15 +37,18 @@ function mergeItem(list, product, quantity) {
   if (existing) {
     return list.map((i) => (i.id === product.id ? { ...i, quantity: i.quantity + quantity } : i));
   }
-  const { id, name, price, unit, category, farmId, farmName, farmerName } = product;
+  // bonusPoints and isCombo are only set on combo lines; plain products leave
+  // them undefined and simply earn on what they cost.
+  const { id, name, price, unit, category, farmId, farmName, farmerName, bonusPoints, isCombo } =
+    product;
   return [
     ...list,
-    { id, name, price, unit, category, farmId, farmName, farmerName, quantity },
+    { id, name, price, unit, category, farmId, farmName, farmerName, bonusPoints, isCombo, quantity },
   ];
 }
 
 export function CartProvider({ children }) {
-  const { user } = useAuth();
+  const { user, addPoints } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -56,42 +60,47 @@ export function CartProvider({ children }) {
   // writing the empty initial state over a stored cart.
   const [hydratedFor, setHydratedFor] = useState(null);
 
+  // The account, identified by email rather than by the user object. Checkout
+  // credits reward points, which replaces that object — keying the loader on it
+  // would reload the pre-checkout cart and drop the order just placed.
+  const email = user?.email ?? null;
+
   // Load this account's cart and orders, then apply anything they tried to add
   // while signed out. Writing the merge straight back keeps this idempotent, so
   // React's double-invoked effects in development can't drop the pending item.
   useEffect(() => {
-    if (!user) {
+    if (!email) {
       setHydratedFor(null);
       setItems([]);
       setOrders([]);
       return;
     }
 
-    const stored = readJSON(localStorage, cartKey(user.email), []);
+    const stored = readJSON(localStorage, cartKey(email), []);
     const pending = readJSON(sessionStorage, PENDING_KEY, null);
     const merged = pending ? mergeItem(stored, pending.product, pending.quantity) : stored;
 
     if (pending) {
       sessionStorage.removeItem(PENDING_KEY);
-      localStorage.setItem(cartKey(user.email), JSON.stringify(merged));
+      localStorage.setItem(cartKey(email), JSON.stringify(merged));
     }
 
     setItems(merged);
-    setOrders(readJSON(localStorage, ordersKey(user.email), []));
-    setHydratedFor(user.email);
-  }, [user]);
+    setOrders(readJSON(localStorage, ordersKey(email), []));
+    setHydratedFor(email);
+  }, [email]);
 
   useEffect(() => {
-    if (user && hydratedFor === user.email) {
-      localStorage.setItem(cartKey(user.email), JSON.stringify(items));
+    if (email && hydratedFor === email) {
+      localStorage.setItem(cartKey(email), JSON.stringify(items));
     }
-  }, [items, user, hydratedFor]);
+  }, [items, email, hydratedFor]);
 
   useEffect(() => {
-    if (user && hydratedFor === user.email) {
-      localStorage.setItem(ordersKey(user.email), JSON.stringify(orders));
+    if (email && hydratedFor === email) {
+      localStorage.setItem(ordersKey(email), JSON.stringify(orders));
     }
-  }, [orders, user, hydratedFor]);
+  }, [orders, email, hydratedFor]);
 
   const value = useMemo(() => {
     // Returns true when the item went in, false when the shopper was sent to sign in.
@@ -140,6 +149,13 @@ export function CartProvider({ children }) {
       if (!user || items.length === 0) return null;
 
       const deliveryFee = method === 'delivery' ? deliveryTotal : 0;
+
+      // Rewards: the goods earn 1 point per ₱200, and any combo in the cart adds
+      // the bonus printed on its card. Delivery fees do not earn.
+      const basePoints = pointsForSpend(subtotal);
+      const bonusPoints = pointsForItems(items);
+      const pointsEarned = basePoints + bonusPoints;
+
       const order = {
         id: `ORD-${Date.now().toString().slice(-6)}`,
         placedAt: new Date().toISOString(),
@@ -149,6 +165,9 @@ export function CartProvider({ children }) {
         itemsTotal: subtotal,
         deliveryFee,
         total: subtotal + deliveryFee,
+        basePoints,
+        bonusPoints,
+        pointsEarned,
         contact,
         // Snapshot the farm details so an old order still reads correctly if a
         // farm later changes its address or fee.
@@ -166,6 +185,7 @@ export function CartProvider({ children }) {
 
       setOrders((current) => [order, ...current]);
       setItems([]);
+      if (pointsEarned > 0) addPoints(pointsEarned);
       return order;
     }
 
@@ -182,7 +202,7 @@ export function CartProvider({ children }) {
       clearCart,
       placeOrder,
     };
-  }, [items, orders, user, navigate, location.pathname]);
+  }, [items, orders, user, addPoints, navigate, location.pathname]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
