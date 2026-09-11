@@ -1,0 +1,230 @@
+.combos-hero {
+  padding: 1.5rem 1.65rem;
+  margin-bottom: 1.5rem;
+  border-radius: var(--radius-card);
+  background: var(--silk-gradient);
+  color: var(--silk-text);
+}
+
+.combos-eyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(234, 251, 241, 0.7);
+}
+
+.combos-hero h1 {
+  margin: 0.4rem 0 0;
+  font-size: 1.9rem;
+  color: var(--silk-text);
+}
+
+.combos-hero-sub {
+  margin: 0.55rem 0 0;
+  max-width: 60ch;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: rgba(234, 251, 241, 0.82);
+}
+
+.combos-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.combos-chip {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--silver-300);
+  background: var(--paper);
+  color: var(--silver-700);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.combos-chip:hover {
+  border-color: var(--leaf-500);
+  color: var(--leaf-600);
+}
+
+.combos-chip.is-active {
+  background: linear-gradient(135deg, var(--leaf-300), var(--leaf-500));
+  border-color: var(--leaf-500);
+  color: #f3fbf6;
+}
+
+.combos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+
+.combo-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.15rem;
+  background: var(--paper);
+  border: 1px solid var(--silver-300);
+  border-top: 4px solid var(--leaf-500);
+  border-radius: var(--radius-card);
+  box-shadow: 0 1px 2px rgba(22, 32, 27, 0.05);
+}
+
+.combo-card.is-bogo {
+  border-top-color: var(--leaf-300);
+}
+
+.combo-card.is-discount {
+  border-top-color: var(--leaf-600);
+}
+
+.combo-card.is-points {
+  border-top-color: var(--silver-500);
+}
+
+.combo-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+}
+
+.combo-type {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--leaf-600);
+}
+
+.combo-title {
+  font-size: 1.12rem;
+  line-height: 1.3;
+}
+
+.combo-tagline {
+  margin: 0.4rem 0 0.6rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--silver-700);
+}
+
+.combo-farm {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--leaf-600);
+  text-decoration: none;
+}
+
+.combo-farm:hover {
+  text-decoration: underline;
+}
+
+.combo-items {
+  list-style: none;
+  margin: 0.85rem 0;
+  padding: 0.75rem 0.85rem;
+  background: var(--mist-50);
+  border-radius: var(--radius-control);
+}
+
+.combo-items li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-size: 0.83rem;
+  padding: 0.2rem 0;
+}
+
+.combo-item-qty {
+  font-weight: 700;
+  color: var(--leaf-600);
+  min-width: 1.6rem;
+}
+
+.combo-item-name {
+  flex: 1;
+  color: var(--moss-900);
+}
+
+.combo-item-name em {
+  font-style: normal;
+  color: var(--silver-700);
+}
+
+.combo-item-note {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--silver-700);
+  background: var(--paper);
+  border: 1px solid var(--silver-300);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+  white-space: nowrap;
+}
+
+.combo-pricing {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.combo-price {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: var(--moss-900);
+}
+
+.combo-was {
+  font-size: 0.9rem;
+  color: var(--silver-500);
+  text-decoration: line-through;
+}
+
+.combo-save {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #f3fbf6;
+  background: var(--leaf-500);
+  border-radius: 999px;
+  padding: 0.2rem 0.5rem;
+}
+
+.combo-points {
+  margin: 0.5rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--moss-900);
+  background: var(--leaf-300);
+  border-radius: 999px;
+  padding: 0.28rem 0.6rem;
+  align-self: flex-start;
+}
+
+.combo-terms {
+  margin: 0.6rem 0 0.9rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--silver-700);
+}
+
+@media (max-width: 560px) {
+  .combos-hero {
+    padding: 1.2rem;
+  }
+
+  .combos-hero h1 {
+    font-size: 1.55rem;
+  }
+}

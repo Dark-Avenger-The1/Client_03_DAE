@@ -49,12 +49,26 @@
 }
 
 .navbar-points {
+  font-family: var(--font-body);
   font-size: 0.8rem;
   font-weight: 700;
   color: var(--moss-900);
   background: var(--leaf-300);
   padding: 0.3rem 0.6rem;
+  border: none;
   border-radius: 999px;
+  cursor: pointer;
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+.navbar-points:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 0 0 3px rgba(79, 203, 139, 0.28);
+}
+
+.navbar-points:focus-visible {
+  outline: 2px solid var(--silk-text);
+  outline-offset: 2px;
 }
 
 .navbar-avatar {
