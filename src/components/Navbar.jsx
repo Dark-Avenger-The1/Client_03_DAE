@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import PointsModal from './PointsModal';
 import logo from '../assets/umalink-logo.png';
 import './Navbar.css';
 
@@ -8,6 +10,7 @@ const NAV_ITEMS = {
   buyer: [
     { label: 'Home', to: '/' },
     { label: 'Browse', to: '/catalog' },
+    { label: 'Combos', to: '/combos' },
     { label: 'Farms', to: '/farms' },
     { label: 'My orders', to: '/orders' },
   ],
@@ -25,9 +28,13 @@ export default function Navbar({ role = 'buyer', brandName = 'UmaLink', userName
   const { user, logout } = useAuth();
   const { count } = useCart();
   const navigate = useNavigate();
+  const [pointsOpen, setPointsOpen] = useState(false);
   // Explicit props win so pages can render a navbar for a fixed persona.
   const displayName = userName ?? user?.name;
-  const displayPoints = points ?? (role === 'buyer' ? user?.points : undefined);
+  // Both sides of the market carry a balance, so the chip shows for whoever is
+  // signed in, and pressing it opens the rules that apply to their role.
+  const displayPoints = points ?? user?.points;
+  const pointsRole = user?.role ?? role;
   const initials = displayName ? displayName.slice(0, 2).toUpperCase() : '?';
 
   // A seller signed in on this device goes straight to their dashboard;
@@ -35,6 +42,7 @@ export default function Navbar({ role = 'buyer', brandName = 'UmaLink', userName
   const sellTarget = user?.role === 'seller' ? '/seller' : '/seller/login';
 
   function handleLogout() {
+    setPointsOpen(false);
     logout();
     navigate('/');
   }
@@ -69,7 +77,16 @@ export default function Navbar({ role = 'buyer', brandName = 'UmaLink', userName
         )}
 
         {typeof displayPoints === 'number' && (
-          <span className="navbar-points">{displayPoints} pts</span>
+          <button
+            type="button"
+            className="navbar-points"
+            onClick={() => setPointsOpen(true)}
+            aria-haspopup="dialog"
+            aria-expanded={pointsOpen}
+            title="See how to earn more points"
+          >
+            {displayPoints} pts
+          </button>
         )}
 
         {role === 'buyer' && !user ? (
@@ -87,6 +104,14 @@ export default function Navbar({ role = 'buyer', brandName = 'UmaLink', userName
           </div>
         )}
       </div>
+
+      {pointsOpen && (
+        <PointsModal
+          role={pointsRole}
+          points={displayPoints ?? 0}
+          onClose={() => setPointsOpen(false)}
+        />
+      )}
     </header>
   );
 }

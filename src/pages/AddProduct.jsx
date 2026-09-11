@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import Layout from '../components/Layout';
 import Button from '../components/Button';
+import Notice from '../components/Notice';
+import { useAuth } from '../context/AuthContext';
 import './AddProduct.css';
+
+// What a seller earns for publishing a listing — see data/points.js.
+const LISTING_POINTS = 15;
 
 const CATEGORIES = ['Vegetable', 'Fruit', 'Livestock'];
 
@@ -47,6 +52,8 @@ const QUANTITY_UNITS = {
 };
 
 const AddProduct = () => {
+  const { addPoints } = useAuth();
+  const [flash, setFlash] = useState({ tone: 'success', text: '' });
   const [category, setCategory] = useState('Vegetable');
   const [productName, setProductName] = useState('');
   const [harvestedWeightProduct, setHarvestedWeightProduct] = useState('');
@@ -71,6 +78,21 @@ const AddProduct = () => {
   const costFields = CATEGORY_COST_FIELDS[category];
   const quantityOptions = QUANTITY_UNITS[category];
 
+  // Pricing still happens elsewhere; what this does now is credit the reward
+  // points a published listing earns the farm.
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!productName.trim()) {
+      setFlash({ tone: 'error', text: 'Give the product a name before submitting it.' });
+      return;
+    }
+    const total = addPoints(LISTING_POINTS);
+    setFlash({
+      tone: 'success',
+      text: `${productName.trim()} submitted for pricing. +${LISTING_POINTS} points — you now have ${total}.`,
+    });
+  };
+
   return (
     <Layout role="seller" userName="Aling Nena">
       <div className="add-product-header">
@@ -78,7 +100,9 @@ const AddProduct = () => {
         <p>These details feed into your standard price — the numbers only, nothing calculated here yet.</p>
       </div>
 
-      <form className="add-product-form" onSubmit={(e) => e.preventDefault()}>
+      <Notice tone={flash.tone}>{flash.text}</Notice>
+
+      <form className="add-product-form" onSubmit={handleSubmit}>
         <section className="form-section">
           <h2>Product info</h2>
           <label className="form-field">
