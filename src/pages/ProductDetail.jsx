@@ -5,7 +5,7 @@ import Button from '../components/Button';
 import CategoryBadge from '../components/CategoryBadge';
 import ProductCard from '../components/ProductCard';
 import Notice from '../components/Notice';
-import products, { getProductById } from '../data/products';
+import { getAllProducts, getProductById } from '../data/products';
 import { useCart } from '../context/CartContext';
 import './ProductDetail.css';
 
@@ -32,7 +32,7 @@ const ProductDetail = () => {
     );
   }
 
-  const related = products
+  const related = getAllProducts()
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 3);
 

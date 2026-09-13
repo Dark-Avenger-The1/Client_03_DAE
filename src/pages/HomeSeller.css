@@ -30,6 +30,16 @@
   gap: 0.2rem;
 }
 
+.stat-card-link {
+  text-decoration: none;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.stat-card-link:hover {
+  border-color: var(--leaf-500);
+  transform: translateY(-2px);
+}
+
 .stat-value {
   font-family: var(--font-display);
   font-size: 1.6rem;

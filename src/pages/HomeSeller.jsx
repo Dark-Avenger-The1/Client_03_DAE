@@ -1,43 +1,59 @@
+import { useMemo } from 'react';
+import { Link } from 'react-router';
 import Layout from '../components/Layout';
 import ProductCard from '../components/ProductCard';
 import Button from '../components/Button';
+import { useAuth } from '../context/AuthContext';
+import { getProductsByFarm } from '../data/products';
 import './HomeSeller.css';
 
-// Mock data — replace with real listings once the backend exists
-const sellerProducts = [
-  { id: 1, name: 'Carrots', price: 60, unit: 'kg', category: 'Vegetable' },
-  { id: 2, name: 'Red Onions', price: 90, unit: 'kg', category: 'Vegetable' },
-  { id: 3, name: 'Mangoes', price: 120, unit: 'kg', category: 'Fruit' },
-  { id: 4, name: 'Native Chicken', price: 350, unit: 'head', category: 'Livestock' },
-];
-
 const HomeSeller = () => {
+  const { user } = useAuth();
+
+  const myProducts = useMemo(
+    () => (user?.farmId ? getProductsByFarm(user.farmId) : []),
+    [user?.farmId],
+  );
+
+  const active = myProducts.filter((p) => typeof p.price === 'number');
+  const pending = myProducts.filter((p) => typeof p.price !== 'number');
+
   return (
-    <Layout role="seller" userName="Aling Nena">
+    <Layout role="seller" userName={user?.name}>
       <div className="seller-dashboard-header">
         <div>
           <h1>Your listings</h1>
           <p>Manage what you're currently offering to buyers.</p>
         </div>
-        <Button variant="primary">Add product</Button>
+        <Link to="/seller/add">
+          <Button variant="primary">Add product</Button>
+        </Link>
       </div>
 
       <div className="seller-stats">
-        <div className="stat-card">
-          <span className="stat-value">{sellerProducts.length}</span>
+        <Link to="/seller/listings?status=active" className="stat-card stat-card-link">
+          <span className="stat-value">{active.length}</span>
           <span className="stat-label">Active listings</span>
-        </div>
-        <div className="stat-card">
-          <span className="stat-value">3</span>
-          <span className="stat-label">Pending orders</span>
-        </div>
+        </Link>
+        <Link to="/seller/listings?status=pending" className="stat-card stat-card-link">
+          <span className="stat-value">{pending.length}</span>
+          <span className="stat-label">Pending pricing</span>
+        </Link>
       </div>
 
-      <div className="seller-product-grid">
-        {sellerProducts.map((product) => (
-          <ProductCard key={product.id} {...product} variant="seller" />
-        ))}
-      </div>
+      {myProducts.length > 0 ? (
+        <div className="seller-product-grid">
+          {myProducts.slice(0, 8).map((product) => (
+            <ProductCard key={product.id} {...product} variant="seller" />
+          ))}
+        </div>
+      ) : (
+        <p className="listings-empty">
+          {user?.farmId
+            ? "You haven't listed anything yet."
+            : "Your account isn't linked to a farm yet, so there's nothing to show here."}
+        </p>
+      )}
     </Layout>
   );
 };

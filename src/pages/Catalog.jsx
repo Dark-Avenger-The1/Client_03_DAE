@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router';
 import Layout from '../components/Layout';
 import ProductCard from '../components/ProductCard';
 import Notice from '../components/Notice';
-import products, { categories } from '../data/products';
+import { getAllProducts, categories } from '../data/products';
 import { useCart } from '../context/CartContext';
 import './Catalog.css';
 
@@ -32,6 +32,7 @@ const Catalog = () => {
   }
 
   const visible = useMemo(() => {
+    const products = getAllProducts();
     const needle = query.trim().toLowerCase();
     const list = products.filter((product) => {
       const matchesCategory = !category || product.category === category;
