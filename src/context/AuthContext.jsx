@@ -55,7 +55,7 @@ export function AuthProvider({ children }) {
   }, [sellerUser]);
 
   useEffect(() => {
-    if (activeRole) localStorage.setItem(ACTIVE_ROLE_KEY, activeRole);
+    if (activeRole) localStorage.setItem(ACTIVE_ROLE_KEY, JSON.stringify(activeRole));
     else localStorage.removeItem(ACTIVE_ROLE_KEY);
   }, [activeRole]);
 

@@ -13,7 +13,7 @@ const accounts = [
     email: 'buyer@demo.com',
     password: 'demo1234',
     role: 'buyer',
-    points: 120,
+    points: 600,
   },
   {
     name: 'Mang Julio Ramos',
