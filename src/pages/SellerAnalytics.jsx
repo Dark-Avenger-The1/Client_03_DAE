@@ -1,5 +1,6 @@
 import Layout from '../components/Layout';
 import './SellerAnalytics.css';
+import { useAuth } from '../context/AuthContext';
 
 // Mock data — replace with real order/sales data once the backend exists
 const weeklySales = [
@@ -25,8 +26,10 @@ const avgOrderValue = Math.round(totalRevenue / totalOrders);
 const maxDay = Math.max(...weeklySales.map((d) => d.amount));
 
 const SellerAnalytics = () => {
+  
+  const {user}= useAuth();
   return (
-    <Layout role="seller" userName="Aling Nena">
+    <Layout role="seller" userName={user?.name}>
       <div className="analytics-header">
         <h1>Your business at a glance</h1>
         <p>A simple look at how your listings are doing this week.</p>
