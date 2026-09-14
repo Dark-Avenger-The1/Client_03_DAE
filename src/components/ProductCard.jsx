@@ -11,6 +11,7 @@ export default function ProductCard({
   unit = 'kg',
   category,
   farmerName,
+  farmId,
   imageUrl,
   variant = 'buyer',
   actionLabel,
@@ -18,6 +19,7 @@ export default function ProductCard({
   onAction,
 }) {
   const label = actionLabel ?? (variant === 'seller' ? 'Edit listing' : 'Add to order');
+  const isPending = variant === 'buyer' && typeof price !== 'number';
 
   const media = imageUrl ? (
     <img src={imageUrl} alt={name} />
@@ -39,13 +41,25 @@ export default function ProductCard({
         <h3 className="product-card-name">
           {to ? <Link to={to}>{name}</Link> : name}
         </h3>
-        {farmerName && <p className="product-card-farmer">{farmerName}</p>}
+        {farmerName && (
+          farmId && variant === 'buyer' ? (
+            <Link to={`/farm/${farmId}`} className="product-card-farmer product-card-farmer-link">
+              {farmerName}
+            </Link>
+          ) : (
+            <p className="product-card-farmer">{farmerName}</p>
+          )
+        )}
         <p className="product-card-price">
-          ₱{price} <span>/ {unit}</span>
+          {typeof price === 'number' ? (
+            <>₱{price} <span>/ {unit}</span></>
+          ) : (
+            <span className="product-card-price-pending">Price pending</span>
+          )}
         </p>
 
-        <Button variant="primary" onClick={onAction}>
-          {label}
+        <Button variant="primary" onClick={onAction} disabled={isPending}>
+          {isPending ? 'Pricing pending' : label}
         </Button>
       </div>
     </div>

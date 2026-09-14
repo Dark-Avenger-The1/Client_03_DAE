@@ -2,7 +2,7 @@ import { Navigate, useLocation } from 'react-router';
 import { useAuth } from '../context/AuthContext';
 
 // Wraps protected routes: signed-out visitors are sent to sign in and
-// returned here afterwards. Pass role="seller" to also gate by account type —
+// returned here afterwards. Pass role="seller" to also gate by account type -
 // wrong-role visitors are sent to the seller sign-in instead of the buyer one.
 export default function RequireAuth({ children, reason = 'account', role }) {
   const { user } = useAuth();

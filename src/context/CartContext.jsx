@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useAuth } from './AuthContext';
 import { getFarmById } from '../data/farms';
-import { pointsForItems, pointsForSpend } from '../data/points';
+import { pointsForSpend, pointsForItems } from '../data/points';
 
 /*
  * Cart + orders, stored per account in localStorage.
@@ -19,6 +19,11 @@ import { pointsForItems, pointsForSpend } from '../data/points';
 const PENDING_KEY = 'dae_pending_item';
 const cartKey = (email) => `dae_cart_${email}`;
 const ordersKey = (email) => `dae_orders_${email}`;
+// Shared across every account on this browser - the fake-backend stand-in
+// that lets a seller "see" orders placed by any buyer, and lets a buyer see
+// the seller's confirmation reflected back. A real backend would replace
+// this with an actual per-farm orders query.
+const FEED_KEY = 'dae_order_feed';
 
 const CartContext = createContext(null);
 
@@ -37,13 +42,10 @@ function mergeItem(list, product, quantity) {
   if (existing) {
     return list.map((i) => (i.id === product.id ? { ...i, quantity: i.quantity + quantity } : i));
   }
-  // bonusPoints and isCombo are only set on combo lines; plain products leave
-  // them undefined and simply earn on what they cost.
-  const { id, name, price, unit, category, farmId, farmName, farmerName, bonusPoints, isCombo } =
-    product;
+  const { id, name, price, unit, category, farmId, farmName, farmerName } = product;
   return [
     ...list,
-    { id, name, price, unit, category, farmId, farmName, farmerName, bonusPoints, isCombo, quantity },
+    { id, name, price, unit, category, farmId, farmName, farmerName, quantity },
   ];
 }
 
@@ -54,53 +56,53 @@ export function CartProvider({ children }) {
 
   const [items, setItems] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [orderFeed, setOrderFeed] = useState(() => readJSON(localStorage, FEED_KEY, []));
   // Whose cart is currently held in state. It is state rather than a ref on
   // purpose: it only matches the signed-in account from the render where items
   // already holds the loaded cart, which keeps the save effects below from
   // writing the empty initial state over a stored cart.
   const [hydratedFor, setHydratedFor] = useState(null);
 
-  // The account, identified by email rather than by the user object. Checkout
-  // credits reward points, which replaces that object — keying the loader on it
-  // would reload the pre-checkout cart and drop the order just placed.
-  const email = user?.email ?? null;
-
   // Load this account's cart and orders, then apply anything they tried to add
   // while signed out. Writing the merge straight back keeps this idempotent, so
   // React's double-invoked effects in development can't drop the pending item.
   useEffect(() => {
-    if (!email) {
+    if (!user) {
       setHydratedFor(null);
       setItems([]);
       setOrders([]);
       return;
     }
 
-    const stored = readJSON(localStorage, cartKey(email), []);
+    const stored = readJSON(localStorage, cartKey(user.email), []);
     const pending = readJSON(sessionStorage, PENDING_KEY, null);
     const merged = pending ? mergeItem(stored, pending.product, pending.quantity) : stored;
 
     if (pending) {
       sessionStorage.removeItem(PENDING_KEY);
-      localStorage.setItem(cartKey(email), JSON.stringify(merged));
+      localStorage.setItem(cartKey(user.email), JSON.stringify(merged));
     }
 
     setItems(merged);
-    setOrders(readJSON(localStorage, ordersKey(email), []));
-    setHydratedFor(email);
-  }, [email]);
+    setOrders(readJSON(localStorage, ordersKey(user.email), []));
+    setHydratedFor(user.email);
+  }, [user]);
 
   useEffect(() => {
-    if (email && hydratedFor === email) {
-      localStorage.setItem(cartKey(email), JSON.stringify(items));
+    if (user && hydratedFor === user.email) {
+      localStorage.setItem(cartKey(user.email), JSON.stringify(items));
     }
-  }, [items, email, hydratedFor]);
+  }, [items, user, hydratedFor]);
 
   useEffect(() => {
-    if (email && hydratedFor === email) {
-      localStorage.setItem(ordersKey(email), JSON.stringify(orders));
+    if (user && hydratedFor === user.email) {
+      localStorage.setItem(ordersKey(user.email), JSON.stringify(orders));
     }
-  }, [orders, email, hydratedFor]);
+  }, [orders, user, hydratedFor]);
+
+  useEffect(() => {
+    localStorage.setItem(FEED_KEY, JSON.stringify(orderFeed));
+  }, [orderFeed]);
 
   const value = useMemo(() => {
     // Returns true when the item went in, false when the shopper was sent to sign in.
@@ -145,29 +147,21 @@ export function CartProvider({ children }) {
     const deliveryTotal = farmGroups.reduce((sum, g) => sum + (g.farm?.deliveryFee ?? 0), 0);
 
     // method: 'delivery' | 'pickup'
-    function placeOrder({ method, contact }) {
+    // paymentMethod: 'cash' | 'gcash' | 'points'
+    function placeOrder({ method, contact, paymentMethod = 'cash' }) {
       if (!user || items.length === 0) return null;
 
       const deliveryFee = method === 'delivery' ? deliveryTotal : 0;
-
-      // Rewards: the goods earn 1 point per ₱200, and any combo in the cart adds
-      // the bonus printed on its card. Delivery fees do not earn.
-      const basePoints = pointsForSpend(subtotal);
-      const bonusPoints = pointsForItems(items);
-      const pointsEarned = basePoints + bonusPoints;
-
       const order = {
         id: `ORD-${Date.now().toString().slice(-6)}`,
         placedAt: new Date().toISOString(),
         status: method === 'pickup' ? 'Ready for pick up' : 'Awaiting confirmation',
         method,
+        paymentMethod,
         items,
         itemsTotal: subtotal,
         deliveryFee,
         total: subtotal + deliveryFee,
-        basePoints,
-        bonusPoints,
-        pointsEarned,
         contact,
         // Snapshot the farm details so an old order still reads correctly if a
         // farm later changes its address or fee.
@@ -185,9 +179,67 @@ export function CartProvider({ children }) {
 
       setOrders((current) => [order, ...current]);
       setItems([]);
-      if (pointsEarned > 0) addPoints(pointsEarned);
+
+      // Delivery orders need a farm to confirm them - drop a copy in the
+      // shared feed so a seller session on this browser can see and act on
+      // it. Pickup orders skip this; they're already "Ready for pick up".
+      if (method === 'delivery') {
+        setOrderFeed((current) => [
+          { ...order, buyerEmail: user.email, buyerName: user.name },
+          ...current,
+        ]);
+      }
+
+      // Earn points on what you spend - unless you just paid WITH points,
+      // which would be circular. Combo bonus points (data/points.js) stack
+      // on top of the base spend rate.
+      if (paymentMethod !== 'points') {
+        const earned = pointsForSpend(subtotal) + pointsForItems(items);
+        if (earned > 0) addPoints(earned);
+      }
+
       return order;
     }
+
+    // Every farmId represented anywhere in the feed - lets a seller check
+    // "is anything here for my farm" without walking every order by hand.
+    function pendingCountForFarm(farmId) {
+      if (!farmId) return 0;
+      return orderFeed.filter(
+        (o) => o.status === 'Awaiting confirmation' && o.farms?.some((f) => f.farmId === farmId),
+      ).length;
+    }
+
+    // Orders that include at least one item from this farm.
+    function feedForFarm(farmId) {
+      if (!farmId) return [];
+      return orderFeed.filter((o) => o.farms?.some((f) => f.farmId === farmId));
+    }
+
+    // The one place an order's status actually changes. Updates the shared
+    // feed AND writes the same change back into that buyer's own order
+    // history, so /orders reflects it - that write-back IS the "notify the
+    // buyer" mechanism, since there's no push notification system here.
+    function updateFeedOrderStatus(orderId, status) {
+      setOrderFeed((current) => current.map((o) => (o.id === orderId ? { ...o, status } : o)));
+
+      const target = orderFeed.find((o) => o.id === orderId);
+      if (!target) return;
+      const buyerOrders = readJSON(localStorage, ordersKey(target.buyerEmail), []);
+      const updated = buyerOrders.map((o) => (o.id === orderId ? { ...o, status } : o));
+      localStorage.setItem(ordersKey(target.buyerEmail), JSON.stringify(updated));
+      if (user && user.email === target.buyerEmail) {
+        setOrders(updated);
+      }
+    }
+
+    // Named helpers for each real transition a seller can make, so the UI
+    // reads as actions ("confirm this order") rather than raw status strings.
+    const confirmFeedOrder = (orderId) =>
+      updateFeedOrderStatus(orderId, 'Confirmed — preparing for delivery');
+    const declineFeedOrder = (orderId) => updateFeedOrderStatus(orderId, 'Declined by farm');
+    const markOutForDelivery = (orderId) => updateFeedOrderStatus(orderId, 'Out for delivery');
+    const markDelivered = (orderId) => updateFeedOrderStatus(orderId, 'Delivered');
 
     return {
       items,
@@ -201,8 +253,15 @@ export function CartProvider({ children }) {
       removeItem,
       clearCart,
       placeOrder,
+      orderFeed,
+      pendingCountForFarm,
+      feedForFarm,
+      confirmFeedOrder,
+      declineFeedOrder,
+      markOutForDelivery,
+      markDelivered,
     };
-  }, [items, orders, user, addPoints, navigate, location.pathname]);
+  }, [items, orders, user, navigate, location.pathname, orderFeed, addPoints]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
@@ -212,4 +271,3 @@ export function useCart() {
   if (!ctx) throw new Error('useCart must be used inside <CartProvider>');
   return ctx;
 }
-

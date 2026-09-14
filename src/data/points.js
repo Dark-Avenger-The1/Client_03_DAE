@@ -103,3 +103,16 @@ export function rulesFor(role) {
 export function rewardsFor(role) {
   return role === 'seller' ? SELLER_REWARDS : BUYER_REWARDS;
 }
+
+/*
+ * Redemption side - added so checkout can offer "pay with points" as a
+ * method, not just award them. Derived from the buyer's own "₱50 off any
+ * order at 100 points" reward above (50 / 100 = ₱0.50 per point), so paying
+ * fully with points uses the same rate that reward already implies, instead
+ * of inventing a second, inconsistent one.
+ */
+export const POINT_REDEMPTION_VALUE = 0.5;
+
+export function pointsNeededForTotal(total) {
+  return Math.ceil(total / POINT_REDEMPTION_VALUE);
+}

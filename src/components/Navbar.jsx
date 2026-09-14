@@ -18,6 +18,7 @@ const NAV_ITEMS = {
     { label: 'Dashboard', to: '/seller' },
     { label: 'My listings', to: '/seller/listings' },
     { label: 'Add product', to: '/seller/add' },
+    { label: 'Requests', to: '/seller/requests' },
     { label: 'Analytics', to: '/seller/analytics' },
   ],
 };
@@ -26,16 +27,21 @@ const NAV_ITEMS = {
 export default function Navbar({ role = 'buyer', brandName = 'UmaLink', userName, points }) {
   const items = NAV_ITEMS[role] || NAV_ITEMS.buyer;
   const { user, logout } = useAuth();
-  const { count } = useCart();
+  const { count, orders, pendingCountForFarm } = useCart();
   const navigate = useNavigate();
   const [pointsOpen, setPointsOpen] = useState(false);
   // Explicit props win so pages can render a navbar for a fixed persona.
   const displayName = userName ?? user?.name;
   // Both sides of the market carry a balance, so the chip shows for whoever is
   // signed in, and pressing it opens the rules that apply to their role.
-  const displayPoints = points ?? user?.points;
+  const displayPoints = points ?? (role === 'buyer' ? user?.points : undefined);
   const pointsRole = user?.role ?? role;
   const initials = displayName ? displayName.slice(0, 2).toUpperCase() : '?';
+
+  // Buyer's own orders still waiting on a farm to confirm; seller's orders
+  // waiting on them to confirm. Whichever applies to the current nav.
+  const pendingBuyerCount = orders.filter((o) => o.status === 'Awaiting confirmation').length;
+  const pendingSellerCount = user?.farmId ? pendingCountForFarm(user.farmId) : 0;
 
   // A seller signed in on this device goes straight to their dashboard;
   // everyone else gets the seller sign-in page first.
@@ -55,11 +61,18 @@ export default function Navbar({ role = 'buyer', brandName = 'UmaLink', userName
       </Link>
 
       <nav className="navbar-links">
-        {items.map((item) => (
-          <Link key={item.to} to={item.to} className="navbar-link">
-            {item.label}
-          </Link>
-        ))}
+        {items.map((item) => {
+          const badgeCount =
+            item.to === '/orders' ? pendingBuyerCount
+            : item.to === '/seller/requests' ? pendingSellerCount
+            : 0;
+          return (
+            <Link key={item.to} to={item.to} className="navbar-link">
+              {item.label}
+              {badgeCount > 0 && <span className="navbar-link-badge">{badgeCount}</span>}
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="navbar-right">
