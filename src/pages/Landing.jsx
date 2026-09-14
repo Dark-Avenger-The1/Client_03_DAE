@@ -6,7 +6,7 @@ import CategoryBadge from '../components/CategoryBadge';
 import Button from '../components/Button';
 import Notice from '../components/Notice';
 import FarmCard from '../components/FarmCard';
-import products, { categories, countProductsByFarm } from '../data/products';
+import { getAllProducts, categories, countProductsByFarm } from '../data/products';
 import farms from '../data/farms';
 import { useCart } from '../context/CartContext';
 import './Landing.css';
@@ -32,8 +32,11 @@ const Landing = () => {
   const [query, setQuery] = useState('');
   const [flash, setFlash] = useState('');
 
+  const products = getAllProducts();
   // A spread across the three categories rather than the first four rows.
-  const featured = [3, 9, 20, 6].map((id) => products.find((p) => p.id === id));
+  // ids match the current Davao del Norte catalog (1-14) - Kalabasa, Durian,
+  // Native Chicken, Cavendish Banana.
+  const featured = [3, 8, 11, 6].map((id) => products.find((p) => p.id === id)).filter(Boolean);
 
   function handleSearch(event) {
     event.preventDefault();
@@ -52,7 +55,7 @@ const Landing = () => {
           <p className="landing-eyebrow">Straight from the farm</p>
           <h1>Fresh produce, bought direct from the people who grew it.</h1>
           <p className="landing-lede">
-            UmaLink connects you with local farms selling vegetables, fruit, and livestock at
+            Farmstand connects you with local farms selling vegetables, fruit, and livestock at
             their own prices — so more of what you pay stays with the farmer.
           </p>
 
@@ -177,7 +180,7 @@ const Landing = () => {
       <section className="landing-sell">
         <div>
           <h2>Growing something worth selling?</h2>
-          <p>List your harvest on UmaLink and set your own price. Setup takes a few minutes.</p>
+          <p>List your harvest on Farmstand and set your own price. Setup takes a few minutes.</p>
         </div>
         <Link to="/seller/login" className="landing-sell-cta">
           Sell a product

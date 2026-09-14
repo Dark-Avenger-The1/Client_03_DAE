@@ -18,6 +18,7 @@ import SellerLogin from './pages/SellerLogin'
 import MyListings from './pages/MyListings'
 import SellerAnalytics from './pages/SellerAnalytics'
 import AddProduct from './pages/AddProduct'
+import SellerRequests from './pages/SellerRequests'
 
 function App() {
   return (
@@ -83,6 +84,14 @@ function App() {
               element={
                 <RequireAuth reason="seller" role="seller">
                   <AddProduct />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/seller/requests"
+              element={
+                <RequireAuth reason="seller" role="seller">
+                  <SellerRequests />
                 </RequireAuth>
               }
             />

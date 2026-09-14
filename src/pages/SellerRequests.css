@@ -8,6 +8,12 @@
   font-size: 0.9rem;
 }
 
+.requests-subheading {
+  font-size: 1rem;
+  margin: 2rem 0 1rem;
+  color: var(--silver-700);
+}
+
 .requests-list {
   display: flex;
   flex-direction: column;
@@ -21,9 +27,13 @@
   border-radius: var(--radius-card);
   padding: 1.1rem 1.25rem;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
+}
+
+.request-card-done {
+  opacity: 0.7;
 }
 
 .request-top-row {
@@ -38,9 +48,24 @@
 }
 
 .request-meta {
-  margin: 0.1rem 0 0;
+  margin: 0.1rem 0 0.5rem;
   font-size: 0.8rem;
   color: var(--silver-700);
+}
+
+.request-items {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  color: var(--moss-900);
+}
+
+.request-total {
+  font-weight: 700;
+  color: var(--leaf-600);
+  margin: 0;
+  font-size: 0.85rem;
 }
 
 .request-actions {
@@ -52,6 +77,5 @@
 @media (max-width: 560px) {
   .request-card {
     flex-direction: column;
-    align-items: stretch;
   }
 }

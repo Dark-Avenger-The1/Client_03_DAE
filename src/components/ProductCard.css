@@ -51,6 +51,16 @@
   color: var(--silver-700);
 }
 
+.product-card-farmer-link {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.product-card-farmer-link:hover {
+  color: var(--leaf-600);
+  text-decoration: underline;
+}
+
 .product-card-price {
   margin: 0.2rem 0 0.6rem;
   font-weight: 700;
@@ -62,6 +72,13 @@
   font-weight: 400;
   color: var(--silver-700);
   font-size: 0.8rem;
+}
+
+.product-card-price-pending {
+  font-weight: 600;
+  font-style: italic;
+  color: var(--silver-700);
+  font-size: 0.85rem;
 }
 
 .product-card-image a {

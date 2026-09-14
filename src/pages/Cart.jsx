@@ -6,16 +6,25 @@ import CategoryBadge from '../components/CategoryBadge';
 import Notice from '../components/Notice';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { pointsNeededForTotal } from '../data/points';
 import './Cart.css';
 
+const PAYMENT_METHODS = [
+  { value: 'cash', label: 'Cash' },
+  { value: 'gcash', label: 'GCash' },
+  { value: 'points', label: 'Points' },
+];
+
 const Cart = () => {
-  const { user } = useAuth();
+  const { user, addPoints } = useAuth();
   const { items, subtotal, farmGroups, deliveryTotal, setQuantity, removeItem, placeOrder } =
     useCart();
   const navigate = useNavigate();
 
   // 'delivery' | 'pickup'
   const [method, setMethod] = useState('delivery');
+  // 'cash' | 'gcash' | 'points'
+  const [paymentMethod, setPaymentMethod] = useState('cash');
   const [form, setForm] = useState({
     fullName: user?.name ?? '',
     phone: '',
@@ -27,6 +36,9 @@ const Cart = () => {
 
   const deliveryFee = method === 'delivery' ? deliveryTotal : 0;
   const total = subtotal + deliveryFee;
+  const pointsCost = pointsNeededForTotal(total);
+  const availablePoints = user?.points ?? 0;
+  const hasEnoughPoints = availablePoints >= pointsCost;
 
   function update(field) {
     return (event) => setForm((current) => ({ ...current, [field]: event.target.value }));
@@ -41,6 +53,11 @@ const Cart = () => {
       return;
     }
 
+    if (paymentMethod === 'points' && !hasEnoughPoints) {
+      setError(`You need ${pointsCost} points for this order — you have ${availablePoints}.`);
+      return;
+    }
+
     const contact =
       method === 'delivery'
         ? { fullName: form.fullName, phone: form.phone, address: form.address, notes: form.notes }
@@ -51,10 +68,13 @@ const Cart = () => {
             notes: form.notes,
           };
 
-    const order = placeOrder({ method, contact });
+    const order = placeOrder({ method, contact, paymentMethod });
     if (!order) {
       setError('We could not place that order. Please try again.');
       return;
+    }
+    if (paymentMethod === 'points') {
+      addPoints(-pointsCost);
     }
     navigate(`/orders?placed=${order.id}`);
   }
@@ -74,7 +94,7 @@ const Cart = () => {
   }
 
   return (
-    <Layout role="buyer" brandName="UmaLink">
+    <Layout role="buyer" brandName="Farmstand">
       <div className="cart-head">
         <h1>Your cart</h1>
         <p>
@@ -107,9 +127,7 @@ const Cart = () => {
                   <div className="cart-item-info">
                     <CategoryBadge category={item.category} />
                     <h3>
-                      {/* Combo lines are sets, not catalog rows, so they point back
-                          at the deal that created them. */}
-                      <Link to={item.isCombo ? '/combos' : `/product/${item.id}`}>{item.name}</Link>
+                      <Link to={`/product/${item.id}`}>{item.name}</Link>
                     </h3>
                     <p className="cart-item-unit">
                       ₱{item.price} / {item.unit}
@@ -172,6 +190,27 @@ const Cart = () => {
               Pick up
             </button>
           </div>
+
+          <div className="fulfillment-toggle" role="group" aria-label="Payment method">
+            {PAYMENT_METHODS.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`fulfillment-option ${paymentMethod === option.value ? 'is-active' : ''}`}
+                onClick={() => setPaymentMethod(option.value)}
+                aria-pressed={paymentMethod === option.value}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+
+          {paymentMethod === 'points' && (
+            <p className={`cart-method-note ${hasEnoughPoints ? '' : 'cart-method-note-warning'}`}>
+              This order costs {pointsCost} points. You have {availablePoints}.
+              {!hasEnoughPoints && ' Not enough — choose Cash or GCash instead, or add fewer items.'}
+            </p>
+          )}
 
           {method === 'pickup' ? (
             <>
@@ -295,13 +334,15 @@ const Cart = () => {
             </div>
           </div>
 
-          <Button type="submit" variant="primary">
+          <Button type="submit" variant="primary" disabled={paymentMethod === 'points' && !hasEnoughPoints}>
             {method === 'pickup' ? 'Reserve for pick up' : 'Place order'}
           </Button>
 
           <p className="cart-summary-note">
-            Ordering as {user.name} ({user.email}). You pay the farm on{' '}
-            {method === 'pickup' ? 'pick up' : 'delivery'}.
+            Ordering as {user.name} ({user.email}).{' '}
+            {paymentMethod === 'points'
+              ? `Paying with ${pointsCost} points.`
+              : `Pay via ${paymentMethod === 'gcash' ? 'GCash' : 'cash'} on ${method === 'pickup' ? 'pick up' : 'delivery'}.`}
           </p>
         </form>
       </div>
