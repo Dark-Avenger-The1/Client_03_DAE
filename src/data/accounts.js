@@ -16,18 +16,18 @@ const accounts = [
     points: 600,
   },
   {
-    name: 'Mang Julio Ramos',
+    name: 'The Weekend Farmers',
     email: 'seller@demo.com',
     password: 'demo1234',
     role: 'seller',
-    farmId: 'tagum-greens',
+    farmId: 'weekend-farmers',
   },
   {
-    name: 'Aling Rosario Mendoza',
+    name: "Yamie's Hydroponic Farm",
     email: 'beta@demo.com',
     password: 'demo1234',
     role: 'seller',
-    farmId: 'panabo-banana',
+    farmId: 'yamies-hydroponic',
   },
 ];
 

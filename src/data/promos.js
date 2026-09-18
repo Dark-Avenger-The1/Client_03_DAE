@@ -9,15 +9,18 @@ import { getProductById } from './products';
  * for the whole set. The list price is NOT written down here: it is summed from
  * the catalog below, so a promo can never drift out of step with a price change.
  *
- * ids below match the current Davao del Norte catalog (data/products.js,
- * data/farms.js) - rewritten from the original placeholder version, which
- * referenced products/farms that no longer exist and crashed on load.
+ * ids below match the current real-farmer catalog (data/products.js,
+ * data/farms.js) - Tagum City farms supplied by the client.
+ *
+ * Only 'bogo' and 'points' types appear here on purpose: every farm now
+ * sells exactly one product, so 'discount'/'bundle' (which need two
+ * different products from the same farm) can't be built without mixing
+ * farms - and Combos.jsx shows one pickup location per promo, so a mixed
+ * combo would show the wrong address for half its items.
  *
  * type:
- *   'bogo'     - buy one take one (or three for two)
- *   'discount' - a second item drops to half price
- *   'bundle'   - a fixed basket for less than its parts
- *   'points'   - sold at list price, the reward is the points
+ *   'bogo'   - buy one take one (or three for two)
+ *   'points' - sold at list price, the reward is the points
  */
 const rawPromos = [
   {
@@ -25,129 +28,102 @@ const rawPromos = [
     type: 'bogo',
     title: 'Buy 1 Take 1 — Pechay',
     tagline: 'Pay for one bundle of pechay, carry home two.',
-    farmId: 'tagum-greens',
+    farmId: 'weekend-farmers',
     category: 'Vegetable',
     price: 45,
     bonusPoints: 5,
     includes: [{ productId: 1, quantity: 2, note: '1 paid + 1 free' }],
-    terms: 'One free bundle per set claimed. Cut the morning of hand-over, while stock lasts.',
+    terms: 'One free bundle per set claimed. While stock lasts.',
   },
   {
-    id: 'bogo-saba',
+    id: 'bogo-lettuce',
     type: 'bogo',
-    title: 'Buy 1 Take 1 — Saba Banana',
-    tagline: 'A kilo of saba for turon, and a second kilo on the farm.',
-    farmId: 'panabo-banana',
+    title: 'Buy 1 Take 1 — Lettuce',
+    tagline: 'A head of hydroponic lettuce for your salad, and a second one free.',
+    farmId: 'yamies-hydroponic',
+    category: 'Vegetable',
+    price: 60,
+    bonusPoints: 6,
+    includes: [{ productId: 2, quantity: 2, note: '1 head paid + 1 head free' }],
+    terms: 'Limit two sets per order. Cut fresh the morning of hand-over.',
+  },
+  {
+    id: 'coconut-3for2',
+    type: 'bogo',
+    title: 'Coconuts — 3 for the price of 2',
+    tagline: 'Fresh whole coconuts, one extra on the house.',
+    farmId: 'francisco-coconut',
     category: 'Fruit',
-    price: 45,
+    price: 50,
     bonusPoints: 5,
-    includes: [{ productId: 7, quantity: 2, note: '1 kg paid + 1 kg free' }],
-    terms: 'Limit two sets per order. Fruit is packed green so it ripens at home.',
+    includes: [{ productId: 3, quantity: 3, note: '2 paid + 1 free' }],
+    terms: 'Coconuts are harvested to order, so allow some prep time.',
   },
   {
-    id: 'durian-rambutan-half',
-    type: 'discount',
-    title: 'Durian now, rambutan at 50% off',
-    tagline: 'Take a kilo of Samal durian and the rambutan drops to half price.',
-    farmId: 'samal-orchard',
-    category: 'Fruit',
-    price: 265,
-    bonusPoints: 12,
-    includes: [
-      { productId: 8, quantity: 1, note: 'full price' },
-      { productId: 9, quantity: 1, note: '50% off' },
-    ],
-    terms: 'The discount applies to the rambutan only, and only inside this combo.',
-  },
-  {
-    id: 'tagum-veggie-box',
-    type: 'bundle',
-    title: 'Tagum vegetable box',
-    tagline: 'Pechay, eggplant and kalabasa picked the same morning.',
-    farmId: 'tagum-greens',
-    category: 'Vegetable',
-    price: 140,
-    bonusPoints: 12,
-    includes: [
-      { productId: 1, quantity: 1 },
-      { productId: 2, quantity: 1 },
-      { productId: 3, quantity: 1 },
-    ],
-    terms: 'Packed as one crate. The farm harvests to order, so allow some prep time.',
-  },
-  {
-    id: 'sitaw-kamote-combo',
-    type: 'bundle',
-    title: 'Sitaw & kamote combo',
-    tagline: 'String beans and sweet potato - a couple of home-cooked meals sorted.',
-    farmId: 'carmen-harvest',
-    category: 'Vegetable',
-    price: 80,
-    bonusPoints: 8,
-    includes: [
-      { productId: 4, quantity: 1 },
-      { productId: 5, quantity: 1 },
-    ],
-    terms: 'Kamote keeps for weeks in a cool pantry. Sitaw is cut fresh the same day.',
-  },
-  {
-    id: 'rambutan-3for2',
-    type: 'bogo',
-    title: 'Rambutan — 3 for the price of 2',
-    tagline: 'Sweet, juicy rambutan sold by the cluster, one cluster free.',
-    farmId: 'samal-orchard',
-    category: 'Fruit',
-    price: 180,
-    bonusPoints: 10,
-    includes: [{ productId: 9, quantity: 3, note: '2 paid + 1 free' }],
-    terms: 'Fruit is graded by hand, so cluster sizes inside a set will vary a little.',
-  },
-  {
-    id: 'chicken-bonus-points',
+    id: 'points-eggplant',
     type: 'points',
-    title: 'Bonus points — native chicken',
+    title: 'Bonus points — eggplant',
     tagline: 'Same price as always, but this order pays back extra points.',
-    farmId: 'kapalong-livestock',
-    category: 'Livestock',
-    price: 400,
-    bonusPoints: 20,
-    includes: [{ productId: 11, quantity: 1, note: 'earns 20 points' }],
-    terms: 'Points land on your account the moment the order is placed.',
-  },
-  {
-    id: 'kalabasa-eggplant-half',
-    type: 'discount',
-    title: 'Kalabasa now, eggplant at 50% off',
-    tagline: 'A kilo of squash brings the eggplant down to half price.',
-    farmId: 'tagum-greens',
+    farmId: 'dalaniel-eggplant',
     category: 'Vegetable',
-    price: 82,
-    bonusPoints: 8,
-    includes: [
-      { productId: 3, quantity: 1, note: 'full price' },
-      { productId: 2, quantity: 1, note: '50% off' },
-    ],
-    terms: 'Both are cooled before packing. Best used within a few days of hand-over.',
+    price: 65,
+    bonusPoints: 15,
+    includes: [{ productId: 4, quantity: 1, note: 'earns 15 points' }],
+    terms: 'Points land on your account the moment the order is placed.',
   },
   {
-    id: 'double-points-eggs',
+    id: 'points-rice',
     type: 'points',
-    title: 'Double points — free-range eggs',
-    tagline: 'Same price as always, but this tray pays back 25 points.',
-    farmId: 'carmen-harvest',
-    category: 'Livestock',
-    price: 220,
-    bonusPoints: 25,
-    includes: [{ productId: 13, quantity: 1, note: 'earns 25 points' }],
+    title: 'Bonus points — rice (5kg)',
+    tagline: 'Stock up on rice and earn a solid points bonus for it.',
+    farmId: 'burgos-rice',
+    category: 'Vegetable',
+    price: 275,
+    bonusPoints: 30,
+    includes: [{ productId: 5, quantity: 5, note: 'earns 30 points' }],
     terms: 'Points land on your account the moment the order is placed.',
+  },
+  {
+    id: 'bogo-bangus-bermino',
+    type: 'bogo',
+    title: 'Buy 1kg Take 1kg — Bangus',
+    tagline: 'A kilo of bangus for the table, and a second kilo on the house.',
+    farmId: 'bermino-bangus',
+    category: 'Livestock',
+    price: 180,
+    bonusPoints: 20,
+    includes: [{ productId: 6, quantity: 2, note: '1 kg paid + 1 kg free' }],
+    terms: 'One free kilo per set claimed. Fresh from the fishpond, while stock lasts.',
+  },
+  {
+    id: 'points-bangus-mendez',
+    type: 'points',
+    title: 'Bonus points — bangus',
+    tagline: 'Same price as always, but this order pays back extra points.',
+    farmId: 'mendez-bangus',
+    category: 'Livestock',
+    price: 180,
+    bonusPoints: 20,
+    includes: [{ productId: 7, quantity: 1, note: 'earns 20 points' }],
+    terms: 'Points land on your account the moment the order is placed.',
+  },
+  {
+    id: 'tilapia-3for2',
+    type: 'bogo',
+    title: 'Tilapia — 3kg for the price of 2kg',
+    tagline: 'Fresh tilapia from the fishpond, one kilo free.',
+    farmId: 'manganaon-tilapia',
+    category: 'Livestock',
+    price: 280,
+    bonusPoints: 20,
+    includes: [{ productId: 8, quantity: 3, note: '2 kg paid + 1 kg free' }],
+    terms: 'Fish is graded by hand, so weights inside a set will vary a little.',
   },
 ];
 
 // Labels the Combos page prints on badges and filter chips.
 export const PROMO_TYPES = {
   bogo: 'Buy 1 take 1',
-  discount: 'Half-price add-on',
-  bundle: 'Bundle',
   points: 'Bonus points',
 };
 
