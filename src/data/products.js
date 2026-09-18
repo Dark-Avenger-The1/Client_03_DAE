@@ -1,33 +1,23 @@
 import { getFarmById } from './farms';
 
 // Real product photos sourced from Wikimedia Commons (stable, hotlink-safe
-// URLs via Special:FilePath - no fetching/guessing of upload hash paths
-// needed). Confirmed against actual Commons file pages, not generated.
+// URLs via Special:FilePath - confirmed against actual Commons file pages).
 const wm = (filename) => `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(filename)}`;
 
 // Seed catalog - written into localStorage once, the first time the app
 // runs with no products saved yet. After that, localStorage is the source
 // of truth: this array is never read again on its own.
+//
+// Real farmers supplied by the client, all in Tagum City, Davao del Norte.
 const seedProducts = [
-  // --- Vegetable (Tagum Greens + Carmen Harvest) ---
-  { id: 1, name: 'Pechay', price: 45, unit: 'bundle', category: 'Vegetable', farmId: 'tagum-greens', stock: 70, description: 'Crisp pechay bundles, washed and cooled the morning of harvest.', imageUrl: wm('Bok Choy.JPG') },
-  { id: 2, name: 'Eggplant', price: 65, unit: 'kg', category: 'Vegetable', farmId: 'tagum-greens', stock: 55, description: 'Long purple eggplant, glossy and seedless, picked at peak size.', imageUrl: wm('Eggplant aubergine brinjal.jpg') },
-  { id: 3, name: 'Kalabasa (Squash)', price: 50, unit: 'kg', category: 'Vegetable', farmId: 'tagum-greens', stock: 90, description: 'Dense orange-fleshed squash, sweet in ginataan or soup.', imageUrl: wm('Kalabasa (Calabaza) squash from the Philippines.jpg') },
-  { id: 4, name: 'Sitaw (String Beans)', price: 55, unit: 'kg', category: 'Vegetable', farmId: 'carmen-harvest', stock: 40, description: 'Yardlong beans cut fresh each morning, crisp and stringless.', imageUrl: wm('Achinga - asparagus bean.jpg') },
-  { id: 5, name: 'Kamote (Sweet Potato)', price: 40, unit: 'kg', category: 'Vegetable', farmId: 'carmen-harvest', stock: 60, description: 'Orange-fleshed kamote, good boiled, fried, or roasted.', imageUrl: wm('Camotli-Camote-Sweet potato.png') },
-
-  // --- Fruit (Panabo Banana + Samal Orchard) ---
-  { id: 6, name: 'Cavendish Banana', price: 55, unit: 'kg', category: 'Fruit', farmId: 'panabo-banana', stock: 120, description: "Export-grade Cavendish from the country's banana capital, hand-cut in bunches.", imageUrl: wm('Cavendish Banana DS.jpg') },
-  { id: 7, name: 'Saba Banana', price: 45, unit: 'kg', category: 'Fruit', farmId: 'panabo-banana', stock: 80, description: 'Firm saba, ideal for turon, banana-cue, or ripening on the counter.', imageUrl: wm('Cavendish Banana DS.jpg') },
-  { id: 8, name: 'Durian', price: 220, unit: 'kg', category: 'Fruit', farmId: 'samal-orchard', stock: 25, description: 'Creamy Samal-grown durian, sealed for transport straight off the boat.', imageUrl: wm('Durian Fruit.JPG') },
-  { id: 9, name: 'Rambutan', price: 90, unit: 'kg', category: 'Fruit', farmId: 'samal-orchard', stock: 45, description: 'Sweet, juicy rambutan sold by the cluster.', imageUrl: wm('Rambutan Fruit.jpg') },
-  { id: 10, name: 'Pomelo', price: 130, unit: 'kg', category: 'Fruit', farmId: 'samal-orchard', stock: 30, description: 'Pink-fleshed pomelo, sweet with just enough bite. Sold whole.', imageUrl: wm('Pomelo fruit.jpg') },
-
-  // --- Livestock (Kapalong Livestock + Carmen Harvest) ---
-  { id: 11, name: 'Native Chicken (live)', price: 400, unit: 'head', category: 'Livestock', farmId: 'kapalong-livestock', stock: 20, description: 'Free-range native chicken raised without growth boosters.', imageUrl: wm('Free Range Chickens.jpg') },
-  { id: 12, name: 'Fattened Hog', price: 11000, unit: 'head', category: 'Livestock', farmId: 'kapalong-livestock', stock: 5, description: 'Pasture-raised hog, roughly 90-110 kg live weight.', imageUrl: wm('Sus scrofa domesticus - Piétrain pig - Hamburg, Tierpark Hagenbeck.jpg') },
-  { id: 13, name: 'Free-range Eggs', price: 220, unit: 'tray', category: 'Livestock', farmId: 'carmen-harvest', stock: 35, description: 'A tray of 30 eggs from pasture-raised hens.', imageUrl: wm('Eggs in basket 2020 G1.jpg') },
-  { id: 14, name: 'Native Goat', price: 6200, unit: 'head', category: 'Livestock', farmId: 'carmen-harvest', stock: 8, description: 'Backyard-raised native goat, grass-fed and dewormed on schedule.', imageUrl: wm('Goat Picture.jpg') },
+  { id: 1, name: 'Pechay', price: 45, unit: 'bundle', category: 'Vegetable', farmId: 'weekend-farmers', stock: 60, description: 'Crisp, farm-fresh pechay at an affordable price.', imageUrl: wm('Bok Choy.JPG') },
+  { id: 2, name: 'Lettuce', price: 60, unit: 'head', category: 'Vegetable', farmId: 'yamies-hydroponic', stock: 50, description: 'Hydroponically grown lettuce, clean and pesticide-free.', imageUrl: wm('Lettuce Mini Heads (7331119710).jpg') },
+  { id: 3, name: 'Coconuts', price: 25, unit: 'piece', category: 'Fruit', farmId: 'francisco-coconut', stock: 100, description: 'Fresh whole coconuts, harvested to order.', imageUrl: wm('Cocos nucifera (fruits).jpg') },
+  { id: 4, name: 'Eggplant', price: 65, unit: 'kg', category: 'Vegetable', farmId: 'dalaniel-eggplant', stock: 45, description: 'Glossy purple eggplant, picked at peak size.', imageUrl: wm('Eggplant aubergine brinjal.jpg') },
+  { id: 5, name: 'Rice', price: 55, unit: 'kg', category: 'Vegetable', farmId: 'burgos-rice', stock: 200, description: 'Locally milled rice, sold fresh from the farm.', imageUrl: wm('Rice grains (IRRI).jpg') },
+  { id: 6, name: 'Bangus (Milkfish)', price: 180, unit: 'kg', category: 'Livestock', farmId: 'bermino-bangus', stock: 40, description: 'Fresh bangus straight from the fishpond.', imageUrl: wm("Milkfish (Chanos chanos) locally called 'bangus' in a Philippine market.jpg") },
+  { id: 7, name: 'Bangus (Milkfish)', price: 180, unit: 'kg', category: 'Livestock', farmId: 'mendez-bangus', stock: 40, description: 'Fresh bangus straight from the fishpond.', imageUrl: wm("Milkfish (Chanos chanos) locally called 'bangus' in a Philippine market.jpg") },
+  { id: 8, name: 'Tilapia', price: 140, unit: 'kg', category: 'Livestock', farmId: 'manganaon-tilapia', stock: 40, description: 'Fresh tilapia straight from the fishpond.', imageUrl: wm('Fresh tilapia.jpg') },
 ];
 
 const PRODUCTS_KEY = 'dae_products';
@@ -43,11 +33,25 @@ function readJSON(key, fallback) {
 
 // The raw, un-joined records exactly as stored - seeds localStorage once,
 // on the very first read, then always reads from there after.
+//
+// Also self-heals: if NONE of the stored products reference a farm that
+// still exists in farms.js, the underlying farm/product data was replaced
+// (exactly what just happened) - stale localStorage from before would
+// otherwise silently break anything that assumes farmName is a string,
+// like Catalog's search. In that case, reseed fresh instead of returning
+// data that's entirely orphaned.
 function readRawProducts() {
   const existing = readJSON(PRODUCTS_KEY, null);
-  if (existing) return existing;
-  localStorage.setItem(PRODUCTS_KEY, JSON.stringify(seedProducts));
-  return seedProducts;
+  if (!existing) {
+    localStorage.setItem(PRODUCTS_KEY, JSON.stringify(seedProducts));
+    return seedProducts;
+  }
+  const stillValid = existing.some((p) => getFarmById(p.farmId));
+  if (!stillValid) {
+    localStorage.setItem(PRODUCTS_KEY, JSON.stringify(seedProducts));
+    return seedProducts;
+  }
+  return existing;
 }
 
 // Joins a raw product with its farm's details, same fields the UI already
@@ -65,8 +69,12 @@ function joinWithFarm(product) {
 
 // Always reads fresh from localStorage - call this (not a cached array) so
 // a product added by a seller shows up the next time a page reads it.
+// Filters out any product whose farm no longer exists, as a second line of
+// defense on top of the reseed check above.
 export function getAllProducts() {
-  return readRawProducts().map(joinWithFarm);
+  return readRawProducts()
+    .filter((p) => getFarmById(p.farmId))
+    .map(joinWithFarm);
 }
 
 export function getProductById(id) {

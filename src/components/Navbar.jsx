@@ -27,7 +27,7 @@ const NAV_ITEMS = {
 export default function Navbar({ role = 'buyer', brandName = 'UmaLink', userName, points }) {
   const items = NAV_ITEMS[role] || NAV_ITEMS.buyer;
   const { user, logout } = useAuth();
-  const { count, orders, pendingCountForFarm } = useCart();
+  const { count, pendingCountForFarm } = useCart();
   const navigate = useNavigate();
   const [pointsOpen, setPointsOpen] = useState(false);
   // Explicit props win so pages can render a navbar for a fixed persona.
@@ -38,9 +38,8 @@ export default function Navbar({ role = 'buyer', brandName = 'UmaLink', userName
   const pointsRole = user?.role ?? role;
   const initials = displayName ? displayName.slice(0, 2).toUpperCase() : '?';
 
-  // Buyer's own orders still waiting on a farm to confirm; seller's orders
-  // waiting on them to confirm. Whichever applies to the current nav.
-  const pendingBuyerCount = orders.filter((o) => o.status === 'Awaiting confirmation').length;
+  // Seller's orders waiting on them to confirm. No equivalent badge on the
+  // buyer's "My orders" link by design - status is visible on that page itself.
   const pendingSellerCount = user?.farmId ? pendingCountForFarm(user.farmId) : 0;
 
   // A seller signed in on this device goes straight to their dashboard;
@@ -62,10 +61,7 @@ export default function Navbar({ role = 'buyer', brandName = 'UmaLink', userName
 
       <nav className="navbar-links">
         {items.map((item) => {
-          const badgeCount =
-            item.to === '/orders' ? pendingBuyerCount
-            : item.to === '/seller/requests' ? pendingSellerCount
-            : 0;
+          const badgeCount = item.to === '/seller/requests' ? pendingSellerCount : 0;
           return (
             <Link key={item.to} to={item.to} className="navbar-link">
               {item.label}
